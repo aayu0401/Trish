@@ -28,10 +28,19 @@ export default function SigninPage() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      mobile: "",
+      mobile: "+91 ",
       password: "",
     },
   });
+
+  const handleMobileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.replace(/\D/g, '');
+    if (value.startsWith('91')) {
+      value = value.substring(2);
+    }
+    const formattedValue = `+91 ${value.substring(0, 10)}`;
+    form.setValue('mobile', formattedValue.trim());
+  };
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
@@ -65,7 +74,11 @@ export default function SigninPage() {
                     <FormItem>
                       <FormLabel className="text-primary">Mobile Number</FormLabel>
                       <FormControl>
-                        <Input placeholder="+91 XXXXXXXXXX" {...field} />
+                        <Input
+                          placeholder="+91 XXXXXXXXXX"
+                          {...field}
+                          onChange={handleMobileChange}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

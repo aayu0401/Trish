@@ -32,12 +32,27 @@ export default function SignupPage() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            mobile: "",
+            mobile: "+91 ",
             aadhar: "",
             password: "",
             interests: [],
         },
     });
+
+    const handleMobileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      let value = e.target.value.replace(/\D/g, '');
+      if (value.startsWith('91')) {
+          value = value.substring(2);
+      }
+      const formattedValue = `+91 ${value.substring(0, 10)}`;
+      form.setValue('mobile', formattedValue.trim());
+    };
+
+    const handleAadharChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value.replace(/\D/g, '').substring(0, 12);
+        const formattedValue = value.replace(/(\d{4})(?=\d)/g, '$1 ').trim();
+        form.setValue('aadhar', formattedValue);
+    };
 
     const toggleInterest = (interest: string) => {
         const currentInterests = form.getValues("interests");
@@ -79,7 +94,11 @@ export default function SignupPage() {
                                         <FormItem>
                                             <FormLabel className="text-primary">Mobile Number</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="+91 XXXXXXXXXX" {...field} />
+                                                <Input
+                                                  placeholder="+91 XXXXXXXXXX"
+                                                  {...field}
+                                                  onChange={handleMobileChange}
+                                                />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -92,7 +111,11 @@ export default function SignupPage() {
                                         <FormItem>
                                             <FormLabel className="text-primary">Aadhar Number</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="XXXX XXXX XXXX" {...field} />
+                                                <Input 
+                                                  placeholder="XXXX XXXX XXXX" 
+                                                  {...field}
+                                                  onChange={handleAadharChange}
+                                                />
                                             </FormControl>
                                             <p className="text-xs text-muted-foreground pt-1">We use Aadhar for one-time verification to ensure a safe community.</p>
                                             <FormMessage />
