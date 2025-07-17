@@ -104,6 +104,42 @@ export const profiles = [
     address: 'Studio 5, Film City, Goregaon, Mumbai, 400065',
     gender: 'Man',
     location: { lat: 12.8452, lon: 77.6602 }, // Mumbai (coords for Electronic City) - 25km away
+  },
+  {
+    id: 7,
+    name: 'Meera, 25',
+    bio: 'Yoga instructor and vegan foodie. I believe in mindful living and positive energy. Looking for a deep connection.',
+    interests: ['Yoga', 'Meditation', 'Veganism', 'Spirituality', 'Sustainability'],
+    photos: [ 'https://placehold.co/600x800.png?7' ],
+    data_ai_hint: 'woman yoga',
+    fullProfile: 'Teaches vinyasa flow yoga. Spends her weekends at farmers markets and exploring vegan cafes. Loves documentary films about nature.',
+    address: '12, Yoga Path, Whitefield, Bangalore, 560066',
+    gender: 'Woman',
+    location: { lat: 12.9698, lon: 77.7499 }, // Whitefield, Bangalore - 18km away
+  },
+  {
+    id: 8,
+    name: 'Arjun, 30',
+    bio: 'Architect with a passion for design, history, and travel. I enjoy sketching old buildings and trying new cuisines.',
+    interests: ['Architecture', 'History', 'Sketching', 'Foodie', 'Travel'],
+    photos: [ 'https://placehold.co/600x800.png?8' ],
+    data_ai_hint: 'man architect',
+    fullProfile: 'Designs modern, sustainable buildings. His hobbies include photography and cycling around the city. Is a massive fan of historical fiction novels.',
+    address: '88, Design Quarters, JP Nagar, Bangalore, 560078',
+    gender: 'Man',
+    location: { lat: 12.9063, lon: 77.5858 }, // JP Nagar, Bangalore - 12km away
+  },
+  {
+    id: 9,
+    name: 'Zara, 27',
+    bio: 'Fashion designer and globetrotter. My life is a blend of fabrics, colors, and cultures. Seeking a partner for my next adventure.',
+    interests: ['Fashion', 'Travel', 'Salsa Dancing', 'Languages', 'Concerts'],
+    photos: [ 'https://placehold.co/600x800.png?9' ],
+    data_ai_hint: 'woman fashion',
+    fullProfile: 'Owns a small boutique clothing line. Has traveled to over 20 countries and is fluent in French and Spanish. Loves to dance salsa on weekends.',
+    address: 'Design Street, Bandra West, Mumbai, 400050',
+    gender: 'Woman',
+    location: { lat: 12.972442, lon: 77.580643 }, // Mumbai (coords for another part of central Bangalore) - 2km away
   }
 ];
 
@@ -144,3 +180,5 @@ export const interests = [
     'Concerts', 'Art', 'Movies', 'Dancing', 'Podcasts', 'DIY Projects', 'Volunteering',
     'Coffee', 'Wine Tasting', 'Board Games', 'Stand-up Comedy', 'Blogging', 'Stargazing',
 ];
+
+    
