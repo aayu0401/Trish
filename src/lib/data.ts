@@ -1,3 +1,4 @@
+
 export const currentUser = {
   id: 0,
   name: "You",
@@ -9,8 +10,14 @@ export const profiles = [
     id: 1,
     name: 'Alia, 28',
     bio: 'Wandering soul with a love for art, music, and spontaneous road trips. Let\'s find a gallery to get lost in.',
-    interests: ['Art', 'Indie Music', 'Travel'],
-    photos: ['https://placehold.co/600x800.png?1'],
+    interests: ['Art', 'Indie Music', 'Travel', 'Photography', 'Museums'],
+    photos: [
+        'https://placehold.co/600x800.png?1', 
+        'https://placehold.co/600x800.png?11', 
+        'https://placehold.co/600x800.png?12',
+        'https://placehold.co/600x800.png?13',
+        'https://placehold.co/600x800.png?14',
+    ],
     data_ai_hint: 'woman portrait',
     fullProfile: 'Art gallery enthusiast, plays the ukulele, and has a cat named "Pixel". Prefers rainy days and cozy coffee shops. Favorite movie genre is documentary.'
   },
@@ -18,8 +25,12 @@ export const profiles = [
     id: 2,
     name: 'Priya, 26',
     bio: 'Fitness enthusiast and dog lover. My golden retriever is my world. Looking for a workout partner and fellow foodie.',
-    interests: ['Fitness', 'Dogs', 'Cooking'],
-    photos: ['https://placehold.co/600x800.png?2'],
+    interests: ['Fitness', 'Dogs', 'Cooking', 'Marathons', 'Meal Prep'],
+    photos: [
+        'https://placehold.co/600x800.png?2',
+        'https://placehold.co/600x800.png?21',
+        'https://placehold.co/600x800.png?22',
+    ],
     data_ai_hint: 'woman smiling',
     fullProfile: 'Enjoys morning runs and weightlifting. Passionate about healthy eating but can\'t resist a good pizza. Volunteers at a local animal shelter on weekends.'
   },
@@ -27,8 +38,13 @@ export const profiles = [
     id: 3,
     name: 'Samira, 29',
     bio: 'Bookworm, tech geek, and aspiring chef. I can probably beat you at chess. Challenge me?',
-    interests: ['Reading', 'Tech', 'Chess'],
-    photos: ['https://placehold.co/600x800.png?3'],
+    interests: ['Reading', 'Tech', 'Chess', 'Board Games', 'Podcasts'],
+    photos: [
+        'https://placehold.co/600x800.png?3',
+        'https://placehold.co/600x800.png?31',
+        'https://placehold.co/600x800.png?32',
+        'https://placehold.co/600x800.png?33',
+    ],
     data_ai_hint: 'woman glasses',
     fullProfile: 'Works in AI research. Loves sci-fi novels and classic films. Trying to perfect the art of making sourdough bread. Believes pineapple on pizza is a crime.'
   },
@@ -36,8 +52,11 @@ export const profiles = [
     id: 4,
     name: 'Nisha, 27',
     bio: 'Musician and nature lover. You can find me playing my guitar at the park or hiking up a mountain. Adventure awaits!',
-    interests: ['Guitar', 'Hiking', 'Concerts'],
-    photos: ['https://placehold.co/600x800.png?4'],
+    interests: ['Guitar', 'Hiking', 'Concerts', 'Camping', 'Stargazing'],
+    photos: [
+        'https://placehold.co/600x800.png?4',
+        'https://placehold.co/600x800.png?41',
+    ],
     data_ai_hint: 'woman nature',
     fullProfile: 'Singer-songwriter for a local band. Loves camping and stargazing. A bit of an adrenaline junkie - has tried bungee jumping and skydiving. Learning Spanish.'
   },
@@ -55,4 +74,10 @@ export const gifts = [
     { name: 'Diamond', icon: 'Gem' },
     { name: 'Wine', icon: 'Wine' },
     { name: 'Cake', icon: 'CakeSlice' },
+];
+
+export const interests = [
+    'Photography', 'Hiking', 'Reading', 'Cooking', 'Gaming', 'Yoga', 'Traveling',
+    'Concerts', 'Art', 'Movies', 'Dancing', 'Podcasts', 'DIY Projects', 'Volunteering',
+    'Coffee', 'Wine Tasting', 'Board Games', 'Stand-up Comedy', 'Blogging', 'Stargazing',
 ];

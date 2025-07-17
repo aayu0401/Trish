@@ -1,13 +1,23 @@
+
 import Image from "next/image";
+import Link from "next/link";
 import { AppLayout } from "@/components/app-layout";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Pencil, Camera, ShieldCheck } from "lucide-react";
+import { Pencil, Camera, ShieldCheck, ShieldAlert } from "lucide-react";
 import { currentUser, profiles } from "@/lib/data";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 // Using a demo profile for display
 const userProfile = profiles[0];
+const isVerified = false; // Mock verification status
 
 export default function ProfilePage() {
   return (
@@ -19,19 +29,32 @@ export default function ProfilePage() {
         </header>
 
         <Card className="max-w-2xl mx-auto shadow-xl rounded-2xl overflow-hidden">
-          <div className="relative h-64 bg-primary/10">
-            <Image
-              src={userProfile.photos[0]}
-              alt={userProfile.name}
-              fill
-              className="object-cover object-top"
-              data-ai-hint={userProfile.data_ai_hint}
-            />
-            <Button size="icon" className="absolute top-4 right-4 bg-black/50 hover:bg-black/70 rounded-full">
-              <Camera className="h-5 w-5"/>
-            </Button>
-          </div>
-          <CardHeader className="text-center -mt-16">
+          <Carousel className="w-full">
+            <CarouselContent>
+              {userProfile.photos.map((photo, index) => (
+                <CarouselItem key={index}>
+                  <div className="relative h-80 bg-primary/10">
+                    <Image
+                      src={photo}
+                      alt={`${userProfile.name} photo ${index + 1}`}
+                      fill
+                      className="object-cover"
+                      data-ai-hint={userProfile.data_ai_hint}
+                    />
+                    {index === 0 && (
+                       <Button size="icon" className="absolute top-4 right-4 bg-black/50 hover:bg-black/70 rounded-full">
+                         <Camera className="h-5 w-5"/>
+                       </Button>
+                    )}
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="absolute left-4" />
+            <CarouselNext className="absolute right-4" />
+          </Carousel>
+          
+          <CardHeader className="text-center -mt-20 relative z-10">
             <div className="relative inline-block">
                <Image
                 src={userProfile.photos[0]}
@@ -50,7 +73,21 @@ export default function ProfilePage() {
           </CardHeader>
 
           <CardContent className="p-6 text-center">
-             <div className="space-y-4">
+             <div className="space-y-6">
+                {!isVerified && (
+                  <Card className="bg-destructive/10 border-destructive/50 p-4">
+                    <div className="flex flex-col items-center gap-2">
+                       <ShieldAlert className="h-8 w-8 text-destructive"/>
+                       <h3 className="font-semibold text-destructive">Verify Your Identity</h3>
+                       <p className="text-sm text-destructive/80">
+                         Complete a quick photo verification to get a badge and build trust.
+                       </p>
+                       <Link href="/profile/verify" passHref>
+                          <Button variant="destructive" className="mt-2">Verify Now</Button>
+                       </Link>
+                    </div>
+                  </Card>
+                )}
                 <div>
                     <h3 className="font-semibold text-primary">Bio</h3>
                     <p className="text-muted-foreground">{userProfile.bio}</p>
