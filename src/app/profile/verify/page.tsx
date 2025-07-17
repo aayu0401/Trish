@@ -1,11 +1,12 @@
 
 'use client';
 
+import Link from 'next/link';
 import { AppLayout } from '@/components/app-layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { Loader, Camera, CheckCircle, XCircle } from 'lucide-react';
+import { Loader, Camera, CheckCircle, XCircle, ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useRef, useState, useEffect } from 'react';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
@@ -143,6 +144,12 @@ export default function VerifyPage() {
     return (
         <AppLayout>
             <div className="container mx-auto px-4 py-8 flex flex-col items-center">
+                 <Link href="/profile" passHref>
+                    <Button variant="ghost" className="absolute top-4 left-4 md:top-8 md:left-8">
+                        <ArrowLeft className="mr-2 h-4 w-4" />
+                        Back to Profile
+                    </Button>
+                </Link>
                 <Card className="max-w-md w-full shadow-lg">
                     <CardHeader>
                         <CardTitle className="text-center text-primary font-headline">Photo Verification</CardTitle>

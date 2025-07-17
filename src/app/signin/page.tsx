@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { Heart, Eye, EyeOff } from "lucide-react";
+import { Heart, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -53,6 +53,12 @@ export default function SigninPage() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-background">
+       <Link href="/" passHref>
+          <Button variant="ghost" className="absolute top-4 left-4">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back
+          </Button>
+      </Link>
       <div className="w-full max-w-md">
         <Card className="shadow-2xl rounded-2xl border-primary/20 bg-secondary/20">
           <CardHeader className="text-center">
