@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from "next/image";
@@ -6,11 +5,13 @@ import Link from "next/link";
 import { AppLayout } from "@/components/app-layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { matches } from "@/lib/data";
+import { useMatchStore } from "@/hooks/use-match-store";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { MessageSquare } from "lucide-react";
 
 export default function MatchesPage() {
+  const { matches } = useMatchStore();
+
   return (
     <AppLayout>
       <div className="container mx-auto px-4 py-8">

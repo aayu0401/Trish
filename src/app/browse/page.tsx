@@ -9,9 +9,11 @@ import { profiles } from "@/lib/data";
 import type { Gift } from "@/lib/data";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useMatchStore } from "@/hooks/use-match-store";
 
 export default function BrowsePage() {
   const { toast } = useToast();
+  const { addMatch } = useMatchStore();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [matchedProfile, setMatchedProfile] = useState<(typeof profiles)[0] | null>(null);
   const [isMatchAlertOpen, setIsMatchAlertOpen] = useState(false);
@@ -23,6 +25,12 @@ export default function BrowsePage() {
 
   const handleLike = (profile: (typeof profiles)[0]) => {
     setMatchedProfile(profile);
+    addMatch({
+      id: profile.id,
+      name: profile.name.split(',')[0],
+      photo: profile.photos[0],
+      data_ai_hint: profile.data_ai_hint,
+    });
     setIsMatchAlertOpen(true);
     handleNextProfile();
   };

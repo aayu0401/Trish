@@ -69,10 +69,15 @@ export const profiles = [
   },
 ];
 
-export const matches = [
-  { id: 2, name: 'Priya, 26', photo: 'https://placehold.co/100x100.png?2', data_ai_hint: 'woman smiling' },
-  { id: 4, name: 'Nisha, 27', photo: 'https://placehold.co/100x100.png?4', data_ai_hint: 'woman nature' },
-];
+export type Match = {
+  id: number;
+  name: string;
+  photo: string;
+  data_ai_hint: string;
+};
+
+// This is now the initial state for the match store, not the definitive list.
+export const matches: Match[] = [];
 
 export type Gift = {
   name: string;
