@@ -20,7 +20,9 @@ import {
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
-import { Settings } from "lucide-react";
+import { Filter } from "lucide-react";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+
 
 // Haversine formula to calculate distance between two lat/lon points
 const getDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
@@ -109,46 +111,51 @@ export default function BrowsePage() {
   return (
     <AppLayout>
       <div className="container mx-auto px-4 py-8 flex flex-col items-center">
-         <Card className="w-full max-w-sm p-4 mb-6 bg-secondary/30">
-            <CardHeader className="p-2 pb-4">
-                <CardTitle className="text-lg flex items-center gap-2">
-                    <Settings className="h-5 w-5 text-primary"/>
-                    Filter Options
-                </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 p-2">
-                <div className="grid gap-2">
-                    <Label htmlFor="gender-filter">Show me</Label>
-                    <Select
-                        value={filters.gender}
-                        onValueChange={(value) => setFilters(prev => ({...prev, gender: value as 'Men' | 'Women' | 'Everyone'}))}
-                    >
-                        <SelectTrigger id="gender-filter">
-                            <SelectValue placeholder="Select gender" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="Women">Women</SelectItem>
-                            <SelectItem value="Men">Men</SelectItem>
-                            <SelectItem value="Everyone">Everyone</SelectItem>
-                        </SelectContent>
-                    </Select>
-                </div>
-                 <div className="grid gap-2">
-                    <div className="flex justify-between items-center">
-                        <Label htmlFor="radius-filter">Search Radius</Label>
-                        <span className="text-sm font-medium text-primary">{filters.radius} km</span>
+        <Collapsible className="w-full max-w-sm mb-6">
+          <CollapsibleTrigger asChild>
+             <Button variant="outline" className="w-full">
+                <Filter className="mr-2 h-4 w-4" />
+                Filter Options
+            </Button>
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+             <Card className="w-full p-4 mt-2 bg-secondary/30">
+                <CardContent className="space-y-4 p-2">
+                    <div className="grid gap-2">
+                        <Label htmlFor="gender-filter">Show me</Label>
+                        <Select
+                            value={filters.gender}
+                            onValueChange={(value) => setFilters(prev => ({...prev, gender: value as 'Men' | 'Women' | 'Everyone'}))}
+                        >
+                            <SelectTrigger id="gender-filter">
+                                <SelectValue placeholder="Select gender" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="Women">Women</SelectItem>
+                                <SelectItem value="Men">Men</SelectItem>
+                                <SelectItem value="Everyone">Everyone</SelectItem>
+                            </SelectContent>
+                        </Select>
                     </div>
-                    <Slider
-                        id="radius-filter"
-                        min={5}
-                        max={100}
-                        step={5}
-                        value={[filters.radius]}
-                        onValueChange={(value) => setFilters(prev => ({...prev, radius: value[0]}))}
-                    />
-                </div>
-            </CardContent>
-        </Card>
+                     <div className="grid gap-2">
+                        <div className="flex justify-between items-center">
+                            <Label htmlFor="radius-filter">Search Radius</Label>
+                            <span className="text-sm font-medium text-primary">{filters.radius} km</span>
+                        </div>
+                        <Slider
+                            id="radius-filter"
+                            min={5}
+                            max={100}
+                            step={5}
+                            value={[filters.radius]}
+                            onValueChange={(value) => setFilters(prev => ({...prev, radius: value[0]}))}
+                        />
+                    </div>
+                </CardContent>
+            </Card>
+          </CollapsibleContent>
+        </Collapsible>
+
 
         {currentProfile ? (
           <ProfileCard
