@@ -1,9 +1,11 @@
+
+import Link from "next/link";
 import { AppLayout } from "@/components/app-layout";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Wallet, CreditCard, PlusCircle } from "lucide-react";
+import { Wallet, CreditCard, PlusCircle, ShoppingBag } from "lucide-react";
 
 export default function WalletPage() {
   return (
@@ -27,10 +29,12 @@ export default function WalletPage() {
               <p className="text-sm text-muted-foreground mt-2">Use coins to send virtual gifts and stand out.</p>
             </CardContent>
             <CardFooter>
-                <Button className="w-full bg-accent hover:bg-accent/90">
-                    <PlusCircle className="mr-2 h-4 w-4"/>
-                    Browse Gifts
-                </Button>
+                <Link href="/gifts" passHref className="w-full">
+                  <Button className="w-full bg-accent hover:bg-accent/90">
+                      <ShoppingBag className="mr-2 h-4 w-4"/>
+                      Browse Gift Store
+                  </Button>
+                </Link>
             </CardFooter>
           </Card>
 
@@ -40,7 +44,7 @@ export default function WalletPage() {
                 <CreditCard className="h-6 w-6 text-primary" />
                 Top Up Balance
               </CardTitle>
-              <CardDescription>Add funds securely with your credit card.</CardDescription>
+              <CardDescription>Add funds securely to purchase more coins.</CardDescription>
             </CardHeader>
             <CardContent>
               <form className="space-y-4">
@@ -66,6 +70,7 @@ export default function WalletPage() {
             </CardContent>
             <CardFooter>
               <Button className="w-full bg-primary hover:bg-primary/90">
+                <PlusCircle className="mr-2 h-4 w-4"/>
                 Add 100 coins
               </Button>
             </CardFooter>

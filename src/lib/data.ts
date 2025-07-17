@@ -1,4 +1,5 @@
 
+
 export const currentUser = {
   id: 0,
   name: "You",
@@ -67,13 +68,26 @@ export const matches = [
   { id: 4, name: 'Nisha, 27', photo: 'https://placehold.co/100x100.png?4', data_ai_hint: 'woman nature' },
 ];
 
-export const gifts = [
-    { name: 'Rose', icon: 'Flower' },
-    { name: 'Chocolate Box', icon: 'Package' },
-    { name: 'Love Letter', icon: 'Mail' },
-    { name: 'Diamond', icon: 'Gem' },
-    { name: 'Wine', icon: 'Wine' },
-    { name: 'Cake', icon: 'CakeSlice' },
+export type Gift = {
+  name: string;
+  icon: string;
+  type: 'virtual' | 'real';
+  description: string;
+  cost: number;
+  image: string;
+};
+
+export const gifts: Gift[] = [
+    // Virtual Gifts
+    { name: 'Virtual Rose', icon: 'Flower', type: 'virtual', description: 'A single, elegant virtual rose.', cost: 10, image: 'https://placehold.co/600x400.png?text=Virtual+Rose' },
+    { name: 'Digital Kiss', icon: 'Mail', type: 'virtual', description: 'Send a sweet, animated kiss.', cost: 5, image: 'https://placehold.co/600x400.png?text=Digital+Kiss' },
+    { name: 'Sparkle Effect', icon: 'Sparkles', type: 'virtual', description: 'Make their profile sparkle for a day.', cost: 25, image: 'https://placehold.co/600x400.png?text=Sparkle+Effect' },
+    { name: 'Virtual Cake', icon: 'CakeSlice', type: 'virtual', description: 'A delicious-looking virtual cake slice.', cost: 15, image: 'https://placehold.co/600x400.png?text=Virtual+Cake' },
+    
+    // Real Gifts
+    { name: 'Bouquet of Roses', icon: 'Flower', type: 'real', description: 'A beautiful bouquet delivered to them.', cost: 500, image: 'https://placehold.co/600x400.png?text=Bouquet' },
+    { name: 'Gourmet Chocolates', icon: 'Package', type: 'real', description: 'A box of artisanal chocolates.', cost: 350, image: 'https://placehold.co/600x400.png?text=Chocolates' },
+    { name: 'Cafe Date Voucher', icon: 'Coffee', type: 'real', description: 'A voucher for a coffee date at a popular cafe.', cost: 250, image: 'https://placehold.co/600x400.png?text=Cafe+Voucher' },
 ];
 
 export const interests = [
