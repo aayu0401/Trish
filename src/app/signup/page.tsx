@@ -74,12 +74,12 @@ export default function SignupPage() {
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-background">
             <div className="w-full max-w-md">
-                <Card className="shadow-2xl rounded-2xl">
+                <Card className="shadow-2xl rounded-2xl border-primary/20 bg-secondary/20">
                     <CardHeader className="text-center">
-                        <div className="mx-auto bg-primary text-primary-foreground rounded-full p-3 w-fit mb-4">
+                        <div className="mx-auto bg-primary text-primary-foreground rounded-full p-3 w-fit mb-4 shadow-lg shadow-primary/30">
                             <Heart className="h-8 w-8" />
                         </div>
-                        <CardTitle className="text-4xl font-headline font-bold text-primary">Create Your Profile</CardTitle>
+                        <CardTitle className="text-4xl font-headline font-bold text-foreground">Create Your Profile</CardTitle>
                         <CardDescription className="text-muted-foreground pt-2">
                             Secure dating with Aadhar verification. No bots, real connections.
                         </CardDescription>
@@ -92,7 +92,7 @@ export default function SignupPage() {
                                     name="mobile"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="text-primary">Mobile Number</FormLabel>
+                                            <FormLabel>Mobile Number</FormLabel>
                                             <FormControl>
                                                 <Input
                                                   placeholder="+91 XXXXXXXXXX"
@@ -109,7 +109,7 @@ export default function SignupPage() {
                                     name="aadhar"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="text-primary">Aadhar Number</FormLabel>
+                                            <FormLabel>Aadhar Number</FormLabel>
                                             <FormControl>
                                                 <Input 
                                                   placeholder="XXXX XXXX XXXX" 
@@ -150,22 +150,22 @@ export default function SignupPage() {
                                   name="interests"
                                   render={({ field }) => (
                                     <FormItem>
-                                      <FormLabel className="text-primary flex items-center gap-2">
+                                      <FormLabel className="flex items-center gap-2">
                                         <Tag className="h-4 w-4" />
                                         Select Your Interests (min. 3)
                                       </FormLabel>
                                        <FormControl>
-                                            <div className="flex flex-wrap gap-2">
+                                            <div className="flex flex-wrap gap-2 pt-2">
                                                 {interests.map((interest) => (
                                                     <button
                                                         key={interest}
                                                         type="button"
                                                         onClick={() => toggleInterest(interest)}
                                                         className={cn(
-                                                            "rounded-full px-3 py-1 text-sm border transition-colors",
+                                                            "rounded-full px-4 py-2 text-sm border transition-colors duration-300",
                                                             field.value.includes(interest)
                                                                 ? "bg-primary text-primary-foreground border-primary"
-                                                                : "bg-secondary/50 hover:bg-secondary border-transparent"
+                                                                : "bg-secondary/50 hover:bg-secondary border-secondary"
                                                         )}
                                                     >
                                                         {interest}
@@ -178,23 +178,20 @@ export default function SignupPage() {
                                   )}
                                 />
 
-                                <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-lg py-6 rounded-xl mt-4">
+                                <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-lg py-6 rounded-xl mt-4 shadow-lg shadow-primary/20">
                                     Verify & Create Profile
                                 </Button>
                             </form>
                         </Form>
-                        <div className="mt-4 text-center text-sm">
+                        <div className="mt-6 text-center text-sm">
                             Already have an account?{" "}
-                            <Link href="/signin" className="underline text-primary">
+                            <Link href="/signin" className="underline font-semibold text-primary">
                                 Sign in
                             </Link>
                         </div>
                     </CardContent>
                 </Card>
             </div>
-            <footer className="py-8 text-center text-muted-foreground text-sm absolute bottom-0">
-                © {new Date().getFullYear()} Trish. All Rights Reserved.
-            </footer>
         </main>
     );
 }

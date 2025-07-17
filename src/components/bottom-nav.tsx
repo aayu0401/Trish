@@ -17,24 +17,26 @@ export function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 h-16 bg-card/80 backdrop-blur-lg border-t border-border shadow-t-lg z-50">
+    <nav className="fixed bottom-0 left-0 right-0 h-20 bg-background/70 backdrop-blur-lg border-t z-50 md:h-16">
       <div className="flex justify-around items-center h-full max-w-lg mx-auto">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           return (
             <Link href={item.href} key={item.href} legacyBehavior passHref>
-              <a className="flex flex-col items-center justify-center w-full h-full text-muted-foreground transition-colors duration-300 ease-in-out">
-                <item.icon
-                  className={cn(
-                    "h-6 w-6 transition-all duration-300",
-                    isActive ? "text-primary scale-110 -translate-y-1" : ""
-                  )}
-                  strokeWidth={isActive ? 2.5 : 2}
-                />
+              <a className="flex flex-col items-center justify-center w-full h-full text-muted-foreground transition-colors duration-300 ease-in-out group">
+                <div className={cn("p-3 rounded-full transition-all duration-300", isActive ? "bg-primary/20" : "")}>
+                    <item.icon
+                    className={cn(
+                        "h-7 w-7 transition-all duration-300",
+                        isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground"
+                    )}
+                    strokeWidth={isActive ? 2.5 : 2}
+                    />
+                </div>
                 <span
                   className={cn(
                     "text-xs font-medium transition-all duration-300",
-                     isActive ? "text-primary" : ""
+                     isActive ? "text-primary font-semibold" : "group-hover:text-foreground"
                   )}
                 >
                   {item.label}

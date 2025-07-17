@@ -51,7 +51,7 @@ export default function BrowsePage() {
             onGiftSend={handleGiftSend}
           />
         ) : (
-          <Card className="text-center p-8">
+          <Card className="text-center p-8 bg-secondary/30 border-primary/20">
             <CardHeader>
               <CardTitle>That's everyone for now!</CardTitle>
             </CardHeader>

@@ -31,21 +31,22 @@ export function ProfileCard({ profile, onLike, onPass, onGiftSend }: ProfileCard
 
   return (
     <>
-      <Card className="relative w-full max-w-sm mx-auto h-[70vh] shadow-2xl rounded-3xl overflow-hidden border-2 border-primary/20">
+      <Card className="relative w-full max-w-sm mx-auto h-[70vh] shadow-2xl rounded-3xl overflow-hidden border-2 border-primary/10">
         <Image
           src={profile.photos[0]}
           alt={profile.name}
           fill
           className="object-cover"
           data-ai-hint={profile.data_ai_hint}
+          priority
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/0 to-black/0" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-          <h2 className="text-3xl font-bold font-headline">{profile.name}</h2>
-          <p className="mt-1 text-base">{profile.bio}</p>
+          <h2 className="text-4xl font-bold font-headline">{profile.name}</h2>
+          <p className="mt-2 text-base font-light">{profile.bio}</p>
           <div className="flex flex-wrap gap-2 mt-4">
             {profile.interests.map((interest) => (
-              <Badge key={interest} variant="secondary" className="bg-white/20 text-white backdrop-blur-sm border-0">
+              <Badge key={interest} variant="secondary" className="bg-white/20 text-white backdrop-blur-sm border-0 font-normal">
                 {interest}
               </Badge>
             ))}
@@ -56,7 +57,7 @@ export function ProfileCard({ profile, onLike, onPass, onGiftSend }: ProfileCard
         <Button
           variant="outline"
           size="icon"
-          className="w-20 h-20 rounded-full border-4 border-destructive/50 text-destructive bg-white hover:bg-destructive/10"
+          className="w-20 h-20 rounded-full border-4 border-destructive/50 text-destructive bg-secondary/80 hover:bg-destructive/10 transition-all duration-300 hover:scale-110"
           onClick={onPass}
         >
           <X className="h-10 w-10" />
@@ -64,18 +65,18 @@ export function ProfileCard({ profile, onLike, onPass, onGiftSend }: ProfileCard
         <Button
           variant="outline"
           size="icon"
-          className="w-16 h-16 rounded-full border-2 border-accent/80 text-accent bg-white hover:bg-accent/10"
+          className="w-16 h-16 rounded-full border-2 border-accent/80 text-accent bg-secondary/80 hover:bg-accent/10 transition-all duration-300 hover:scale-110"
           onClick={() => setIsGiftDialogOpen(true)}
         >
-          <Gift className="h-8 w-8" />
+          <Gift className="h-8 w-8 text-yellow-400" />
         </Button>
         <Button
           variant="outline"
           size="icon"
-          className="w-20 h-20 rounded-full border-4 border-primary/50 text-primary bg-white hover:bg-primary/10"
+          className="w-20 h-20 rounded-full border-4 border-primary/50 text-primary bg-secondary/80 hover:bg-primary/10 transition-all duration-300 hover:scale-110"
           onClick={() => onLike(profile)}
         >
-          <Heart className="h-10 w-10" />
+          <Heart className="h-10 w-10 text-green-400" />
         </Button>
       </CardFooter>
       <GiftDialog

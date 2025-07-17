@@ -54,12 +54,12 @@ export default function SigninPage() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-background">
       <div className="w-full max-w-md">
-        <Card className="shadow-2xl rounded-2xl">
+        <Card className="shadow-2xl rounded-2xl border-primary/20 bg-secondary/20">
           <CardHeader className="text-center">
-            <div className="mx-auto bg-primary text-primary-foreground rounded-full p-3 w-fit mb-4">
+            <div className="mx-auto bg-primary text-primary-foreground rounded-full p-3 w-fit mb-4 shadow-lg shadow-primary/30">
               <Heart className="h-8 w-8" />
             </div>
-            <CardTitle className="text-4xl font-headline font-bold text-primary">Welcome Back</CardTitle>
+            <CardTitle className="text-4xl font-headline font-bold text-foreground">Welcome Back</CardTitle>
             <CardDescription className="text-muted-foreground pt-2">
               Sign in to continue your journey.
             </CardDescription>
@@ -72,7 +72,7 @@ export default function SigninPage() {
                   name="mobile"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-primary">Mobile Number</FormLabel>
+                      <FormLabel>Mobile Number</FormLabel>
                       <FormControl>
                         <Input
                           placeholder="+91 XXXXXXXXXX"
@@ -106,23 +106,20 @@ export default function SigninPage() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-lg py-6 rounded-xl">
+                <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-lg py-6 rounded-xl shadow-lg shadow-primary/20">
                   Sign In
                 </Button>
               </form>
             </Form>
-            <div className="mt-4 text-center text-sm">
+            <div className="mt-6 text-center text-sm">
               Don't have an account?{" "}
-              <Link href="/signup" className="underline text-primary">
+              <Link href="/signup" className="underline font-semibold text-primary">
                 Sign up
               </Link>
             </div>
           </CardContent>
         </Card>
       </div>
-       <footer className="py-8 text-center text-muted-foreground text-sm absolute bottom-0">
-          © {new Date().getFullYear()} Trish. All Rights Reserved.
-        </footer>
     </main>
   );
 }
