@@ -3,7 +3,8 @@
 export const currentUser = {
   id: 0,
   name: "You",
-  profile: `Loves hiking and exploring new cafes. A software engineer by day, a novelist by night. Looking for someone to share adventures and quiet moments with.`
+  profile: `Loves hiking and exploring new cafes. A software engineer by day, a novelist by night. Looking for someone to share adventures and quiet moments with.`,
+  photo: 'https://placehold.co/100x100.png?text=You'
 };
 
 export const profiles = [
