@@ -1,5 +1,7 @@
+
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { Heart } from "lucide-react";
 import { AppLayout } from "@/components/app-layout";
@@ -10,14 +12,14 @@ import { useMatchStore } from "@/hooks/use-match-store";
 import { useToast } from "@/hooks/use-toast";
 
 // Simulate a list of users who liked the current user
-// In a real app, this would come from a backend
-const likesYouProfiles = profiles.slice(2, 4);
+const initialLikes = profiles.slice(2, 4);
 
 export default function LikesPage() {
   const { addMatch } = useMatchStore();
   const { toast } = useToast();
+  const [likesYouProfiles, setLikesYouProfiles] = useState(initialLikes);
 
-  const handleMatchBack = (profile: typeof likesYouProfiles[0]) => {
+  const handleMatchBack = (profile: typeof initialLikes[0]) => {
     const newMatch: Match = {
       id: profile.id,
       name: profile.name.split(',')[0],
@@ -29,7 +31,8 @@ export default function LikesPage() {
       title: "It's a Match!",
       description: `You and ${newMatch.name} can now chat.`,
     });
-    // In a real app, you would remove them from the 'likes you' list
+    // Remove the profile from the 'likes you' list after matching
+    setLikesYouProfiles(prev => prev.filter(p => p.id !== profile.id));
   };
 
   return (
