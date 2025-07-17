@@ -33,7 +33,7 @@ const GiftCard = ({ gift }: { gift: Gift }) => {
         <p className="text-muted-foreground text-sm mt-1">{gift.description}</p>
       </CardContent>
       <CardFooter className="p-4 bg-secondary/30 flex justify-between items-center">
-        <p className="text-lg font-bold text-primary">{gift.cost} coins</p>
+        <p className="text-lg font-bold text-primary">₹{gift.cost}</p>
         <Button size="sm">
           <Send className="mr-2 h-4 w-4" />
           Send

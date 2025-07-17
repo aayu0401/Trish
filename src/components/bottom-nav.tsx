@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Flame, MessageSquare, User, Heart, ShoppingBag } from "lucide-react";
+import { Flame, MessageSquare, User, Heart, Gift } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { href: "/browse", icon: Flame, label: "Browse" },
   { href: "/likes", icon: Heart, label: "Likes" },
   { href: "/matches", icon: MessageSquare, label: "Chats" },
-  { href: "/gifts", icon: ShoppingBag, label: "Gifts" },
+  { href: "/gifts", icon: Gift, label: "Gifts" },
   { href: "/profile", icon: User, label: "Profile" },
 ];
 

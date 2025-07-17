@@ -55,7 +55,7 @@ export function GiftDialog({ isOpen, onOpenChange, onGiftSend }: GiftDialogProps
               >
                 {Icon && <Icon className="h-8 w-8 text-accent transition-transform group-hover:scale-110" />}
                 <span className="text-xs text-center leading-tight font-semibold">{gift.name}</span>
-                <span className="text-xs text-muted-foreground">{gift.cost} coins</span>
+                <span className="text-xs text-muted-foreground">₹{gift.cost}</span>
               </Button>
             );
           })}

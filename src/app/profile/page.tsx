@@ -8,7 +8,7 @@ import { AppLayout } from "@/components/app-layout";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Pencil, Camera, ShieldCheck, ShieldAlert, LogOut } from "lucide-react";
+import { Pencil, Camera, ShieldCheck, ShieldAlert, LogOut, Wallet } from "lucide-react";
 import { currentUser, profiles } from "@/lib/data";
 import {
   Carousel,
@@ -121,11 +121,17 @@ export default function ProfilePage() {
                 </div>
              </div>
           </CardContent>
-          <CardFooter className="flex flex-col sm:flex-row gap-4 p-6 bg-secondary/30">
+          <CardFooter className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-6 bg-secondary/30">
              <Button className="w-full bg-primary hover:bg-primary/90 rounded-full">
                 <Pencil className="mr-2 h-4 w-4"/>
                 Edit Profile
             </Button>
+             <Link href="/profile/wallet" passHref className="w-full">
+                <Button variant="outline" className="w-full rounded-full">
+                    <Wallet className="mr-2 h-4 w-4"/>
+                    My Wallet
+                </Button>
+            </Link>
             <Button variant="outline" className="w-full rounded-full" onClick={handleLogout}>
                 <LogOut className="mr-2 h-4 w-4"/>
                 Logout
