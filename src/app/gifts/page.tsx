@@ -1,4 +1,7 @@
 
+'use client';
+
+import { useState } from "react";
 import Image from "next/image";
 import { AppLayout } from "@/components/app-layout";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
@@ -6,8 +9,18 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { gifts, Gift } from "@/lib/data";
 import { ShoppingBag, Star, Package, Send, Sparkles } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const GiftCard = ({ gift }: { gift: Gift }) => {
+    const { toast } = useToast();
+
+    const handleSendGift = () => {
+        toast({
+            title: 'Gift Sent!',
+            description: `You sent a ${gift.name}.`
+        });
+    }
+
   return (
     <Card className="shadow-lg rounded-2xl overflow-hidden flex flex-col">
       <CardHeader className="p-0">
@@ -19,7 +32,7 @@ const GiftCard = ({ gift }: { gift: Gift }) => {
             className="object-cover"
             data-ai-hint="gift present"
           />
-          <Badge 
+          <Badge
             variant={gift.type === 'real' ? 'destructive' : 'secondary'}
             className="absolute top-2 right-2"
           >
@@ -34,7 +47,7 @@ const GiftCard = ({ gift }: { gift: Gift }) => {
       </CardContent>
       <CardFooter className="p-4 bg-secondary/30 flex justify-between items-center">
         <p className="text-lg font-bold text-primary">₹{gift.cost}</p>
-        <Button size="sm">
+        <Button size="sm" onClick={handleSendGift}>
           <Send className="mr-2 h-4 w-4" />
           Send
         </Button>

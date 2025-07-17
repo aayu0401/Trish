@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -8,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import type { Gift as GiftType } from "@/lib/data";
 import { GiftDialog } from "./gift-dialog";
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 type Profile = {
   id: number;
@@ -28,6 +30,16 @@ type ProfileCardProps = {
 
 export function ProfileCard({ profile, onLike, onPass, onGiftSend }: ProfileCardProps) {
   const [isGiftDialogOpen, setIsGiftDialogOpen] = useState(false);
+  const { toast } = useToast();
+
+  const handleGiftSendWithToast = (gift: GiftType) => {
+    onGiftSend(gift);
+    toast({
+        title: "Gift Sent!",
+        description: `You sent a ${gift.name} to ${profile.name.split(',')[0]}.`
+    });
+    setIsGiftDialogOpen(false);
+  }
 
   return (
     <>
@@ -37,7 +49,7 @@ export function ProfileCard({ profile, onLike, onPass, onGiftSend }: ProfileCard
           alt={profile.name}
           fill
           className="object-cover"
-          data-ai_hint={profile.data_ai_hint}
+          data-ai-hint={profile.data_ai_hint}
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
@@ -82,12 +94,10 @@ export function ProfileCard({ profile, onLike, onPass, onGiftSend }: ProfileCard
       <GiftDialog
         isOpen={isGiftDialogOpen}
         onOpenChange={setIsGiftDialogOpen}
-        onGiftSend={(gift) => {
-          onGiftSend(gift);
-          setIsGiftDialogOpen(false);
-        }}
+        onGiftSend={handleGiftSendWithToast}
         giftType="virtual"
       />
     </>
   );
 }
+
