@@ -21,7 +21,7 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { Filter } from "lucide-react";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 
 // Haversine formula to calculate distance between two lat/lon points
@@ -110,24 +110,25 @@ export default function BrowsePage() {
 
   return (
     <AppLayout>
-      <div className="container mx-auto px-4 py-8 flex flex-col items-center">
-        <Collapsible className="w-full max-w-sm mb-6">
-          <CollapsibleTrigger asChild>
-             <Button variant="outline" className="w-full">
-                <Filter className="mr-2 h-4 w-4" />
-                Filter Options
-            </Button>
-          </CollapsibleTrigger>
-          <CollapsibleContent>
-             <Card className="w-full p-4 mt-2 bg-secondary/30">
-                <CardContent className="space-y-4 p-2">
+      <div className="container mx-auto px-4 py-8 flex flex-col items-center relative">
+
+        <div className="w-full max-w-sm relative">
+           <div className="absolute top-4 right-4 z-10">
+             <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="secondary" size="icon" className="rounded-full shadow-lg">
+                  <Filter className="h-5 w-5 text-primary" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-64 p-4" align="end">
+                <div className="space-y-4">
                     <div className="grid gap-2">
-                        <Label htmlFor="gender-filter">Show me</Label>
+                        <Label htmlFor="gender-filter" className="font-semibold">Show me</Label>
                         <Select
                             value={filters.gender}
                             onValueChange={(value) => setFilters(prev => ({...prev, gender: value as 'Men' | 'Women' | 'Everyone'}))}
                         >
-                            <SelectTrigger id="gender-filter">
+                            <SelectTrigger id="gender-filter" className="w-full">
                                 <SelectValue placeholder="Select gender" />
                             </SelectTrigger>
                             <SelectContent>
@@ -139,7 +140,7 @@ export default function BrowsePage() {
                     </div>
                      <div className="grid gap-2">
                         <div className="flex justify-between items-center">
-                            <Label htmlFor="radius-filter">Search Radius</Label>
+                            <Label htmlFor="radius-filter" className="font-semibold">Search Radius</Label>
                             <span className="text-sm font-medium text-primary">{filters.radius} km</span>
                         </div>
                         <Slider
@@ -151,31 +152,32 @@ export default function BrowsePage() {
                             onValueChange={(value) => setFilters(prev => ({...prev, radius: value[0]}))}
                         />
                     </div>
+                </div>
+              </PopoverContent>
+            </Popover>
+           </div>
+          {currentProfile ? (
+            <ProfileCard
+              key={currentProfile.id}
+              profile={currentProfile}
+              onLike={handleLike}
+              onPass={handlePass}
+              onGiftSend={handleGiftSend}
+            />
+          ) : (
+            <div className="flex items-center justify-center h-[70vh] w-full max-w-sm">
+                <Card className="text-center p-8 bg-secondary/30 border-primary/20 w-full">
+                <CardHeader>
+                  <CardTitle>That's everyone for now!</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p>Try expanding your search radius or changing your filters.</p>
+                  <Button onClick={() => setCurrentIndex(0)} className="mt-4">Reset Search</Button>
                 </CardContent>
-            </Card>
-          </CollapsibleContent>
-        </Collapsible>
-
-
-        {currentProfile ? (
-          <ProfileCard
-            key={currentProfile.id}
-            profile={currentProfile}
-            onLike={handleLike}
-            onPass={handlePass}
-            onGiftSend={handleGiftSend}
-          />
-        ) : (
-          <Card className="text-center p-8 bg-secondary/30 border-primary/20">
-            <CardHeader>
-              <CardTitle>That's everyone for now!</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>Try expanding your search radius or changing your filters.</p>
-              <Button onClick={() => setCurrentIndex(0)} className="mt-4">Reset Search</Button>
-            </CardContent>
-          </Card>
-        )}
+              </Card>
+            </div>
+          )}
+        </div>
       </div>
       <MatchAlertDialog
         isOpen={isMatchAlertOpen}
