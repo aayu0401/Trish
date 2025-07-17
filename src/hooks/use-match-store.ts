@@ -4,6 +4,7 @@ import { matches as initialMatches, type Match } from '@/lib/data';
 type MatchState = {
   matches: Match[];
   addMatch: (match: Match) => void;
+  removeMatch: (matchId: number) => void;
 };
 
 export const useMatchStore = create<MatchState>((set) => ({
@@ -16,4 +17,8 @@ export const useMatchStore = create<MatchState>((set) => ({
       }
       return { matches: [...state.matches, newMatch] };
     }),
+  removeMatch: (matchId) =>
+    set((state) => ({
+      matches: state.matches.filter((match) => match.id !== matchId),
+    })),
 }));

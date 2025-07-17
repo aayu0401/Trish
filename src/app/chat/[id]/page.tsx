@@ -5,16 +5,19 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
-import { ArrowLeft, Send, ShieldAlert, Loader, Gift } from 'lucide-react';
+import { ArrowLeft, Send, ShieldAlert, Loader, Gift, MoreVertical, Trash2 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
-import { matches, currentUser, profiles } from '@/lib/data';
+import { currentUser, profiles } from '@/lib/data';
 import { verifyChatMessage } from '@/ai/flows/verify-chat';
 import type { Gift as GiftType } from '@/lib/data';
 import { GiftDialog } from '@/components/gift-dialog';
+import { useMatchStore } from '@/hooks/use-match-store';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 
 type Message = {
   id: number;
@@ -32,6 +35,8 @@ export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [isGiftDialogOpen, setIsGiftDialogOpen] = useState(false);
+  const [isUnmatchAlertOpen, setIsUnmatchAlertOpen] = useState(false);
+  const { removeMatch } = useMatchStore();
 
   const match = profiles.find((p) => p.id === matchId);
 
@@ -83,6 +88,16 @@ export default function ChatPage() {
     });
     setIsGiftDialogOpen(false);
   };
+  
+  const handleUnmatch = () => {
+    removeMatch(match.id);
+    toast({
+      title: "Unmatched",
+      description: `You have unmatched with ${match.name.split(',')[0]}.`,
+    });
+    router.push('/matches');
+  };
+
 
   return (
     <>
@@ -97,7 +112,25 @@ export default function ChatPage() {
           <AvatarImage src={match.photos[0]} alt={match.name} />
           <AvatarFallback>{match.name.charAt(0)}</AvatarFallback>
         </Avatar>
-        <div className="font-semibold">{match.name.split(',')[0]}</div>
+        <div className="font-semibold flex-grow">{match.name.split(',')[0]}</div>
+        
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon">
+                    <MoreVertical />
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+                <DropdownMenuItem
+                 className="text-destructive focus:text-destructive"
+                 onClick={() => setIsUnmatchAlertOpen(true)}
+                >
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    <span>Unmatch</span>
+                </DropdownMenuItem>
+            </DropdownMenuContent>
+        </DropdownMenu>
+
       </header>
 
       <main className="flex-1 overflow-y-auto p-4 space-y-4">
@@ -168,6 +201,22 @@ export default function ChatPage() {
         onGiftSend={handleGiftSend}
         giftType="real"
       />
+      <AlertDialog open={isUnmatchAlertOpen} onOpenChange={setIsUnmatchAlertOpen}>
+        <AlertDialogContent>
+            <AlertDialogHeader>
+                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                    This will permanently remove {match.name.split(',')[0]} from your matches and delete your conversation history. This action cannot be undone.
+                </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={handleUnmatch} className="bg-destructive hover:bg-destructive/90">
+                    Unmatch
+                </AlertDialogAction>
+            </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }
