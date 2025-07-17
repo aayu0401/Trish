@@ -4,7 +4,8 @@ export const currentUser = {
   id: 0,
   name: "You",
   profile: `Loves hiking and exploring new cafes. A software engineer by day, a novelist by night. Looking for someone to share adventures and quiet moments with.`,
-  photo: 'https://placehold.co/100x100.png?text=You'
+  photo: 'https://placehold.co/100x100.png?text=You',
+  address: '123, Tech Park, Silicon Valley, Bangalore, 560100'
 };
 
 export const profiles = [
@@ -21,7 +22,8 @@ export const profiles = [
         'https://placehold.co/600x800.png?14',
     ],
     data_ai_hint: 'woman portrait',
-    fullProfile: 'Art gallery enthusiast, plays the ukulele, and has a cat named "Pixel". Prefers rainy days and cozy coffee shops. Favorite movie genre is documentary.'
+    fullProfile: 'Art gallery enthusiast, plays the ukulele, and has a cat named "Pixel". Prefers rainy days and cozy coffee shops. Favorite movie genre is documentary.',
+    address: 'A-1, 4th Floor, Art House, Colaba, Mumbai, 400001'
   },
   {
     id: 2,
@@ -34,7 +36,8 @@ export const profiles = [
         'https://placehold.co/600x800.png?22',
     ],
     data_ai_hint: 'woman smiling',
-    fullProfile: 'Enjoys morning runs and weightlifting. Passionate about healthy eating but can\'t resist a good pizza. Volunteers at a local animal shelter on weekends.'
+    fullProfile: 'Enjoys morning runs and weightlifting. Passionate about healthy eating but can\'t resist a good pizza. Volunteers at a local animal shelter on weekends.',
+    address: 'Plot 42, Gymkhana Road, Sector 15, Gurgaon, 122001'
   },
   {
     id: 3,
@@ -48,7 +51,8 @@ export const profiles = [
         'https://placehold.co/600x800.png?33',
     ],
     data_ai_hint: 'woman glasses',
-    fullProfile: 'Works in AI research. Loves sci-fi novels and classic films. Trying to perfect the art of making sourdough bread. Believes pineapple on pizza is a crime.'
+    fullProfile: 'Works in AI research. Loves sci-fi novels and classic films. Trying to perfect the art of making sourdough bread. Believes pineapple on pizza is a crime.',
+    address: 'No. 25, 3rd Main Road, Indiranagar, Bangalore, 560038'
   },
   {
     id: 4,
@@ -60,7 +64,8 @@ export const profiles = [
         'https://placehold.co/600x800.png?41',
     ],
     data_ai_hint: 'woman nature',
-    fullProfile: 'Singer-songwriter for a local band. Loves camping and stargazing. A bit of an adrenaline junkie - has tried bungee jumping and skydiving. Learning Spanish.'
+    fullProfile: 'Singer-songwriter for a local band. Loves camping and stargazing. A bit of an adrenaline junkie - has tried bungee jumping and skydiving. Learning Spanish.',
+    address: '7, Mountain View Road, Rishikesh, Uttarakhand, 249201'
   },
 ];
 
