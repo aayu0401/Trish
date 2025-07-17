@@ -5,7 +5,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
-import { ArrowLeft, Send, ShieldAlert, Loader } from 'lucide-react';
+import { ArrowLeft, Send, ShieldAlert, Loader, Gift } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,6 +13,8 @@ import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
 import { matches, currentUser, profiles } from '@/lib/data';
 import { verifyChatMessage } from '@/ai/flows/verify-chat';
+import type { Gift as GiftType } from '@/lib/data';
+import { GiftDialog } from '@/components/gift-dialog';
 
 type Message = {
   id: number;
@@ -22,13 +24,14 @@ type Message = {
 
 export default function ChatPage() {
   const router = useRouter();
-  const params = useParams();
+  params = useParams();
   const { toast } = useToast();
   const matchId = parseInt(params.id as string, 10);
 
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
+  const [isGiftDialogOpen, setIsGiftDialogOpen] = useState(false);
 
   const match = profiles.find((p) => p.id === matchId);
 
@@ -72,8 +75,17 @@ export default function ChatPage() {
       setIsLoading(false);
     }
   };
+  
+  const handleGiftSend = (gift: GiftType) => {
+    toast({
+      title: "Gift Sent!",
+      description: `You sent a ${gift.name} to ${match.name.split(',')[0]}.`,
+    });
+    setIsGiftDialogOpen(false);
+  };
 
   return (
+    <>
     <div className="flex flex-col h-screen bg-secondary/30">
       <header className="flex items-center gap-4 p-3 border-b bg-background shadow-sm">
         <Link href="/matches" passHref>
@@ -134,6 +146,9 @@ export default function ChatPage() {
 
       <footer className="p-3 border-t bg-background">
         <form onSubmit={handleSendMessage} className="flex items-center gap-2">
+           <Button type="button" variant="ghost" size="icon" onClick={() => setIsGiftDialogOpen(true)}>
+            <Gift className="text-primary" />
+          </Button>
           <Input
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
@@ -147,5 +162,12 @@ export default function ChatPage() {
         </form>
       </footer>
     </div>
+    <GiftDialog
+        isOpen={isGiftDialogOpen}
+        onOpenChange={setIsGiftDialogOpen}
+        onGiftSend={handleGiftSend}
+        giftType="real"
+      />
+    </>
   );
 }

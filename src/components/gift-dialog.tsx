@@ -28,23 +28,28 @@ type GiftDialogProps = {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
   onGiftSend: (gift: GiftType) => void;
+  giftType?: 'virtual' | 'real' | 'all';
 };
 
-export function GiftDialog({ isOpen, onOpenChange, onGiftSend }: GiftDialogProps) {
-  // Only show virtual gifts in this quick-send dialog
-  const virtualGifts = gifts.filter(g => g.type === 'virtual');
+export function GiftDialog({ isOpen, onOpenChange, onGiftSend, giftType = 'all' }: GiftDialogProps) {
+  const giftsToShow = gifts.filter(g => giftType === 'all' || g.type === giftType);
+  const title = giftType === 'real' ? 'Send a Real Gift' : 'Send a Virtual Gift';
+  const description = giftType === 'real' 
+    ? "Surprise them with a gift delivered to their address. Our team will coordinate the delivery."
+    : "Break the ice by sending a thoughtful virtual gift. Costs will be deducted from your wallet.";
+
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle className="text-primary font-headline text-2xl">Send a Virtual Gift</DialogTitle>
+          <DialogTitle className="text-primary font-headline text-2xl">{title}</DialogTitle>
           <DialogDescription>
-            Break the ice by sending a thoughtful virtual gift. Costs will be deducted from your wallet.
+            {description}
           </DialogDescription>
         </DialogHeader>
         <div className="grid grid-cols-3 gap-4 py-4">
-          {virtualGifts.map((gift) => {
+          {giftsToShow.map((gift) => {
             const Icon = iconMap[gift.icon];
             return (
               <Button
@@ -59,6 +64,11 @@ export function GiftDialog({ isOpen, onOpenChange, onGiftSend }: GiftDialogProps
               </Button>
             );
           })}
+           {giftsToShow.length === 0 && (
+            <p className="col-span-3 text-center text-muted-foreground">
+              No {giftType} gifts available at the moment.
+            </p>
+          )}
         </div>
       </DialogContent>
     </Dialog>

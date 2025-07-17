@@ -37,7 +37,7 @@ export function ProfileCard({ profile, onLike, onPass, onGiftSend }: ProfileCard
           alt={profile.name}
           fill
           className="object-cover"
-          data-ai-hint={profile.data_ai_hint}
+          data-ai_hint={profile.data_ai_hint}
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
@@ -86,6 +86,7 @@ export function ProfileCard({ profile, onLike, onPass, onGiftSend }: ProfileCard
           onGiftSend(gift);
           setIsGiftDialogOpen(false);
         }}
+        giftType="virtual"
       />
     </>
   );
