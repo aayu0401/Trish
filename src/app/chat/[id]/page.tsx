@@ -24,7 +24,7 @@ type Message = {
 
 export default function ChatPage() {
   const router = useRouter();
-  params = useParams();
+  const params = useParams();
   const { toast } = useToast();
   const matchId = parseInt(params.id as string, 10);
 
