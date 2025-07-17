@@ -1,29 +1,51 @@
 "use client";
 
 import { useState } from "react";
-import { WandSparkles, CornerDownRight } from "lucide-react";
+import { WandSparkles, CornerDownRight, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { suggestIceBreaker, SuggestIceBreakerOutput } from "@/ai/flows/suggest-ice-breaker";
 import { currentUser, type profiles } from "@/lib/data";
 import { Badge } from "./ui/badge";
+import { useToast } from "@/hooks/use-toast";
 
 type Profile = (typeof profiles)[0];
 
-export function AiIceBreaker({ matchedProfile }: { matchedProfile: Profile }) {
+export function AiIceBreaker({ matchedProfile, onSend }: { matchedProfile: Profile, onSend: () => void }) {
   const [suggestion, setSuggestion] = useState<SuggestIceBreakerOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
 
   const handleGenerate = async () => {
     setIsLoading(true);
-    const result = await suggestIceBreaker({
-      userProfile: currentUser.profile,
-      matchProfile: matchedProfile.fullProfile,
-    });
-    setSuggestion(result);
-    setIsLoading(false);
+    setSuggestion(null);
+    try {
+      const result = await suggestIceBreaker({
+        userProfile: currentUser.profile,
+        matchProfile: matchedProfile.fullProfile,
+      });
+      setSuggestion(result);
+    } catch (error) {
+        toast({
+            title: "Error",
+            description: "Could not generate icebreaker. Please try again.",
+            variant: "destructive"
+        })
+    } finally {
+        setIsLoading(false);
+    }
   };
+
+  const handleSend = () => {
+    if (suggestion) {
+        toast({
+            title: "Icebreaker Sent!",
+            description: `Your message to ${matchedProfile.name.split(',')[0]} has been sent.`,
+        });
+        onSend();
+    }
+  }
 
   return (
     <Card className="bg-secondary/50 border-primary/20">
@@ -41,6 +63,7 @@ export function AiIceBreaker({ matchedProfile }: { matchedProfile: Profile }) {
           <div className="space-y-4">
             <Skeleton className="h-8 w-full" />
             <Skeleton className="h-12 w-full" />
+             <Skeleton className="h-10 w-full mt-2" />
           </div>
         ) : suggestion ? (
           <div className="space-y-4 text-sm">
@@ -64,10 +87,16 @@ export function AiIceBreaker({ matchedProfile }: { matchedProfile: Profile }) {
                 </span>
               </div>
             </div>
-            <Button onClick={handleGenerate} className="w-full mt-2" variant="secondary">
-                <WandSparkles className="mr-2 h-4 w-4" />
-                Regenerate
-            </Button>
+            <div className="flex gap-2 mt-4">
+                 <Button onClick={handleSend} className="w-full bg-primary hover:bg-primary/90">
+                    <Send className="mr-2 h-4 w-4" />
+                    Send
+                </Button>
+                <Button onClick={handleGenerate} className="w-full" variant="secondary">
+                    <WandSparkles className="mr-2 h-4 w-4" />
+                    Regenerate
+                </Button>
+            </div>
           </div>
         ) : (
             <Button onClick={handleGenerate} className="w-full">

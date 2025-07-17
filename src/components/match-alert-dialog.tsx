@@ -27,6 +27,10 @@ export function MatchAlertDialog({
 }: MatchAlertDialogProps) {
   if (!matchedProfile) return null;
 
+  const handleSend = () => {
+    onOpenChange(false);
+  }
+
   return (
     <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
       <AlertDialogContent>
@@ -38,7 +42,7 @@ export function MatchAlertDialog({
             You and {matchedProfile.name.split(',')[0]} have liked each other.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AiIceBreaker matchedProfile={matchedProfile} />
+        <AiIceBreaker matchedProfile={matchedProfile} onSend={handleSend} />
         <AlertDialogFooter>
           <AlertDialogCancel>Close</AlertDialogCancel>
         </AlertDialogFooter>
