@@ -10,16 +10,10 @@ import { Badge } from "@/components/ui/badge";
 import { gifts, Gift } from "@/lib/data";
 import { ShoppingBag, Star, Package, Send, Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { SendGiftDialog } from "@/components/send-gift-dialog";
+import { useMatchStore } from "@/hooks/use-match-store";
 
-const GiftCard = ({ gift }: { gift: Gift }) => {
-    const { toast } = useToast();
-
-    const handleSendGift = () => {
-        toast({
-            title: 'Gift Sent!',
-            description: `You sent a ${gift.name}.`
-        });
-    }
+const GiftCard = ({ gift, onSendClick }: { gift: Gift; onSendClick: (gift: Gift) => void; }) => {
 
   return (
     <Card className="shadow-lg rounded-2xl overflow-hidden flex flex-col">
@@ -47,7 +41,7 @@ const GiftCard = ({ gift }: { gift: Gift }) => {
       </CardContent>
       <CardFooter className="p-4 bg-secondary/30 flex justify-between items-center">
         <p className="text-lg font-bold text-primary">₹{gift.cost}</p>
-        <Button size="sm" onClick={handleSendGift}>
+        <Button size="sm" onClick={() => onSendClick(gift)}>
           <Send className="mr-2 h-4 w-4" />
           Send
         </Button>
@@ -57,10 +51,33 @@ const GiftCard = ({ gift }: { gift: Gift }) => {
 };
 
 export default function GiftStorePage() {
+  const { toast } = useToast();
+  const { matches } = useMatchStore();
+  const [selectedGift, setSelectedGift] = useState<Gift | null>(null);
+  const [isSendGiftDialogOpen, setIsSendGiftDialogOpen] = useState(false);
+
   const virtualGifts = gifts.filter((g) => g.type === 'virtual');
   const realGifts = gifts.filter((g) => g.type === 'real');
 
+  const handleSendClick = (gift: Gift) => {
+    setSelectedGift(gift);
+    setIsSendGiftDialogOpen(true);
+  }
+
+  const handleSendGift = (matchName: string) => {
+    if (selectedGift) {
+        toast({
+            title: 'Gift Sent!',
+            description: `You sent a ${selectedGift.name} to ${matchName}.`
+        });
+    }
+    setIsSendGiftDialogOpen(false);
+    setSelectedGift(null);
+  }
+
+
   return (
+    <>
     <AppLayout>
       <div className="container mx-auto px-4 py-8">
         <header className="mb-8 text-center">
@@ -77,7 +94,7 @@ export default function GiftStorePage() {
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {realGifts.map((gift) => (
-              <GiftCard key={gift.name} gift={gift} />
+              <GiftCard key={gift.name} gift={gift} onSendClick={handleSendClick} />
             ))}
           </div>
         </section>
@@ -89,11 +106,21 @@ export default function GiftStorePage() {
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {virtualGifts.map((gift) => (
-              <GiftCard key={gift.name} gift={gift} />
+              <GiftCard key={gift.name} gift={gift} onSendClick={handleSendClick} />
             ))}
           </div>
         </section>
       </div>
     </AppLayout>
+    {selectedGift && (
+        <SendGiftDialog
+            isOpen={isSendGiftDialogOpen}
+            onOpenChange={setIsSendGiftDialogOpen}
+            gift={selectedGift}
+            matches={matches}
+            onSendGift={handleSendGift}
+        />
+    )}
+    </>
   );
 }
