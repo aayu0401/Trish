@@ -52,7 +52,9 @@ export default function BrowsePage() {
   const filteredProfiles = useMemo(() => {
     return profiles.filter(profile => {
       // Don't show the current user in the browse list
-      if (profile.id === currentUser.id) return false;
+      if (profile.id === currentUser.id) {
+        return false;
+      }
       
       const genderMatch = filters.gender === 'Everyone' || profile.gender === filters.gender;
       
