@@ -1,11 +1,14 @@
 
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { AppLayout } from "@/components/app-layout";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Pencil, Camera, ShieldCheck, ShieldAlert } from "lucide-react";
+import { Pencil, Camera, ShieldCheck, ShieldAlert, LogOut } from "lucide-react";
 import { currentUser, profiles } from "@/lib/data";
 import {
   Carousel,
@@ -14,18 +17,30 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { useToast } from "@/hooks/use-toast";
 
 // Using a demo profile for display
 const userProfile = profiles[0];
 const isVerified = false; // Mock verification status
 
 export default function ProfilePage() {
+  const router = useRouter();
+  const { toast } = useToast();
+
+  const handleLogout = () => {
+    toast({
+      title: "Logged Out",
+      description: "You have been successfully logged out.",
+    });
+    router.push('/');
+  };
+
   return (
     <AppLayout>
       <div className="container mx-auto px-4 py-8">
         <header className="mb-8 text-center">
           <h1 className="text-4xl font-bold font-headline text-primary">My Profile</h1>
-          <p className="text-muted-foreground">This is how others see you.</p>
+          <p className="text-muted-foreground">This is how others see you. Manage your account here.</p>
         </header>
 
         <Card className="max-w-2xl mx-auto shadow-xl rounded-2xl overflow-hidden">
@@ -64,18 +79,20 @@ export default function ProfilePage() {
                 className="rounded-full border-4 border-white shadow-lg mx-auto"
                 data-ai-hint={userProfile.data_ai_hint}
               />
-               <div className="absolute bottom-1 right-1 bg-green-500 rounded-full p-1 border-2 border-white">
-                  <ShieldCheck className="h-4 w-4 text-white"/>
-               </div>
+              {isVerified && (
+                <div className="absolute bottom-1 right-1 bg-green-500 rounded-full p-1 border-2 border-white">
+                    <ShieldCheck className="h-4 w-4 text-white"/>
+                </div>
+              )}
             </div>
              <CardTitle className="mt-4 text-3xl font-bold font-headline">{userProfile.name}</CardTitle>
              <CardDescription>Joined 2 months ago</CardDescription>
           </CardHeader>
 
-          <CardContent className="p-6 text-center">
+          <CardContent className="p-6 pt-4 text-center">
              <div className="space-y-6">
                 {!isVerified && (
-                  <Card className="bg-destructive/10 border-destructive/50 p-4">
+                  <Card className="bg-destructive/10 border-destructive/50 p-4 rounded-xl">
                     <div className="flex flex-col items-center gap-2">
                        <ShieldAlert className="h-8 w-8 text-destructive"/>
                        <h3 className="font-semibold text-destructive">Verify Your Identity</h3>
@@ -89,25 +106,31 @@ export default function ProfilePage() {
                   </Card>
                 )}
                 <div>
-                    <h3 className="font-semibold text-primary">Bio</h3>
-                    <p className="text-muted-foreground">{userProfile.bio}</p>
+                    <h3 className="font-semibold text-primary text-lg">Bio</h3>
+                    <p className="text-muted-foreground mt-1">{userProfile.bio}</p>
                 </div>
                  <div>
-                    <h3 className="font-semibold text-primary">Interests</h3>
+                    <h3 className="font-semibold text-primary text-lg">Interests</h3>
                      <div className="flex flex-wrap gap-2 justify-center mt-2">
                         {userProfile.interests.map((interest) => (
-                        <Badge key={interest} variant="secondary" className="text-primary">
+                        <Badge key={interest} variant="secondary" className="text-base py-1 px-3">
                             {interest}
                         </Badge>
                         ))}
                     </div>
                 </div>
              </div>
-             <Button className="mt-8 w-full max-w-xs mx-auto bg-primary hover:bg-primary/90 rounded-full">
+          </CardContent>
+          <CardFooter className="flex flex-col sm:flex-row gap-4 p-6 bg-secondary/30">
+             <Button className="w-full bg-primary hover:bg-primary/90 rounded-full">
                 <Pencil className="mr-2 h-4 w-4"/>
                 Edit Profile
             </Button>
-          </CardContent>
+            <Button variant="outline" className="w-full rounded-full" onClick={handleLogout}>
+                <LogOut className="mr-2 h-4 w-4"/>
+                Logout
+            </Button>
+          </CardFooter>
         </Card>
       </div>
     </AppLayout>
