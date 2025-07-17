@@ -4,7 +4,9 @@ export const currentUser = {
   name: "You",
   profile: `Loves hiking and exploring new cafes. A software engineer by day, a novelist by night. Looking for someone to share adventures and quiet moments with.`,
   photo: 'https://placehold.co/100x100.png?text=You',
-  address: '123, Tech Park, Silicon Valley, Bangalore, 560100'
+  address: '123, Tech Park, Silicon Valley, Bangalore, 560100',
+  identityVerified: false,
+  kycVerified: false,
 };
 
 export const profiles = [

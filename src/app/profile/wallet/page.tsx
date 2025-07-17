@@ -7,11 +7,13 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Wallet, CreditCard, PlusCircle, ShoppingBag, Heart, ArrowLeft } from "lucide-react";
+import { Wallet, CreditCard, PlusCircle, ShoppingBag, Heart, ArrowLeft, ShieldAlert } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { currentUser } from "@/lib/data";
 
 export default function WalletPage() {
     const { toast } = useToast();
+    const isKycVerified = currentUser.kycVerified;
 
     const handleTopUp = () => {
         toast({
@@ -71,29 +73,44 @@ export default function WalletPage() {
               <CardDescription>Add funds securely to purchase gifts.</CardDescription>
             </CardHeader>
             <CardContent>
-              <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-                <div>
-                  <Label htmlFor="card-number">Card Number</Label>
-                  <Input id="card-number" placeholder="**** **** **** 1234" />
-                </div>
-                <div className="flex gap-4">
-                  <div className="w-1/2">
-                    <Label htmlFor="expiry">Expiry Date</Label>
-                    <Input id="expiry" placeholder="MM / YY" />
+              {isKycVerified ? (
+                <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+                  <div>
+                    <Label htmlFor="card-number">Card Number</Label>
+                    <Input id="card-number" placeholder="**** **** **** 1234" />
                   </div>
-                  <div className="w-1/2">
-                    <Label htmlFor="cvc">CVC</Label>
-                    <Input id="cvc" placeholder="***" />
+                  <div className="flex gap-4">
+                    <div className="w-1/2">
+                      <Label htmlFor="expiry">Expiry Date</Label>
+                      <Input id="expiry" placeholder="MM / YY" />
+                    </div>
+                    <div className="w-1/2">
+                      <Label htmlFor="cvc">CVC</Label>
+                      <Input id="cvc" placeholder="***" />
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-center justify-between pt-2">
-                    <Label>Amount:</Label>
-                    <span className="font-bold text-xl text-primary">₹500</span>
-                </div>
-              </form>
+                  <div className="flex items-center justify-between pt-2">
+                      <Label>Amount:</Label>
+                      <span className="font-bold text-xl text-primary">₹500</span>
+                  </div>
+                </form>
+              ) : (
+                 <Card className="bg-destructive/10 border-destructive/50 p-4 rounded-xl text-center">
+                    <div className="flex flex-col items-center gap-2">
+                       <ShieldAlert className="h-8 w-8 text-destructive"/>
+                       <h3 className="font-semibold text-destructive">KYC Required</h3>
+                       <p className="text-sm text-destructive/80">
+                         Please complete KYC verification to add funds to your wallet.
+                       </p>
+                       <Link href="/profile/kyc" passHref>
+                          <Button variant="destructive" className="mt-2">Verify with PAN</Button>
+                       </Link>
+                    </div>
+                  </Card>
+              )}
             </CardContent>
             <CardFooter>
-              <Button className="w-full bg-primary hover:bg-primary/90" onClick={handleTopUp}>
+              <Button className="w-full bg-primary hover:bg-primary/90" onClick={handleTopUp} disabled={!isKycVerified}>
                 <PlusCircle className="mr-2 h-4 w-4"/>
                 Add ₹500 to Wallet
               </Button>

@@ -21,11 +21,12 @@ import { useToast } from "@/hooks/use-toast";
 
 // Using a demo profile for display
 const userProfile = profiles[0];
-const isVerified = false; // Mock verification status
+
 
 export default function ProfilePage() {
   const router = useRouter();
   const { toast } = useToast();
+  const isVerified = currentUser.identityVerified; // Use dynamic verification status
 
   const handleLogout = () => {
     toast({
@@ -122,10 +123,12 @@ export default function ProfilePage() {
              </div>
           </CardContent>
           <CardFooter className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-6 bg-secondary/30">
-             <Button className="w-full bg-primary hover:bg-primary/90 rounded-full">
-                <Pencil className="mr-2 h-4 w-4"/>
-                Edit Profile
-            </Button>
+             <Link href="/profile/edit" passHref className="w-full">
+                <Button className="w-full bg-primary hover:bg-primary/90 rounded-full">
+                    <Pencil className="mr-2 h-4 w-4"/>
+                    Edit Profile
+                </Button>
+            </Link>
              <Link href="/profile/wallet" passHref className="w-full">
                 <Button variant="outline" className="w-full rounded-full">
                     <Wallet className="mr-2 h-4 w-4"/>
