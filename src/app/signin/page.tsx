@@ -1,13 +1,47 @@
+
 "use client";
 
 import Link from "next/link";
-import { Heart } from "lucide-react";
+import { Heart, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+
+const formSchema = z.object({
+  mobile: z.string().regex(/^\+91\s[1-9][0-9]{9}$/, "Please enter a valid Indian mobile number (+91 XXXXXXXXXX)."),
+  password: z.string().min(1, "Password is required."),
+});
 
 export default function SigninPage() {
+  const router = useRouter();
+  const { toast } = useToast();
+  const [showPassword, setShowPassword] = useState(false);
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      mobile: "",
+      password: "",
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(values);
+    toast({
+      title: "Signed In Successfully!",
+      description: "Welcome back!",
+    });
+    router.push("/browse");
+  }
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-background">
       <div className="w-full max-w-md">
@@ -22,21 +56,48 @@ export default function SigninPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form className="space-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="mobile" className="text-primary">Mobile Number</Label>
-                <Input id="mobile" type="tel" placeholder="+91 XXXXX XXXXX" required className="text-base"/>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input id="password" type="password" placeholder="Enter your password" required className="text-base"/>
-              </div>
-              <Link href="/browse" passHref>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <FormField
+                  control={form.control}
+                  name="mobile"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-primary">Mobile Number</FormLabel>
+                      <FormControl>
+                        <Input placeholder="+91 XXXXXXXXXX" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Input type={showPassword ? "text" : "password"} placeholder="Enter your password" {...field} />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute inset-y-0 right-0 pr-3 flex items-center text-muted-foreground"
+                          >
+                            {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                          </button>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-lg py-6 rounded-xl">
                   Sign In
                 </Button>
-              </Link>
-            </form>
+              </form>
+            </Form>
             <div className="mt-4 text-center text-sm">
               Don't have an account?{" "}
               <Link href="/signup" className="underline text-primary">

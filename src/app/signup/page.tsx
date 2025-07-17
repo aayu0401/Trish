@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { Heart, Tag } from "lucide-react";
+import { Heart, Tag, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,18 +10,51 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { interests } from "@/lib/data";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
+
+const formSchema = z.object({
+  mobile: z.string().regex(/^\+91\s[1-9][0-9]{9}$/, "Please enter a valid Indian mobile number (+91 XXXXXXXXXX)."),
+  aadhar: z.string().regex(/^[0-9]{4}\s[0-9]{4}\s[0-9]{4}$/, "Please enter a valid 12-digit Aadhar number."),
+  password: z.string().min(8, "Password must be at least 8 characters long."),
+  interests: z.array(z.string()).min(3, "Please select at least 3 interests."),
+});
 
 export default function SignupPage() {
-    const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
+    const router = useRouter();
+    const { toast } = useToast();
+    const [showPassword, setShowPassword] = useState(false);
+    
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            mobile: "",
+            aadhar: "",
+            password: "",
+            interests: [],
+        },
+    });
 
     const toggleInterest = (interest: string) => {
-        setSelectedInterests((prev) =>
-            prev.includes(interest)
-                ? prev.filter((i) => i !== interest)
-                : [...prev, interest]
-        );
+        const currentInterests = form.getValues("interests");
+        const newInterests = currentInterests.includes(interest)
+            ? currentInterests.filter((i) => i !== interest)
+            : [...currentInterests, interest];
+        form.setValue("interests", newInterests, { shouldValidate: true });
     };
+    
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        console.log(values);
+        toast({
+          title: "Account Created!",
+          description: "Your profile has been successfully created.",
+        });
+        router.push("/browse");
+    }
 
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-background">
@@ -37,51 +70,96 @@ export default function SignupPage() {
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <form className="space-y-4">
-                            <div className="space-y-2">
-                                <Label htmlFor="mobile" className="text-primary">Mobile Number</Label>
-                                <Input id="mobile" type="tel" placeholder="+91 XXXXX XXXXX" required className="text-base" />
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="aadhar" className="text-primary">Aadhar Number</Label>
-                                <Input id="aadhar" type="text" placeholder="XXXX XXXX XXXX" required className="text-base" />
-                                <p className="text-xs text-muted-foreground pt-1">We use Aadhar for one-time verification to ensure a safe community.</p>
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="password">Create Password</Label>
-                                <Input id="password" type="password" placeholder="Choose a strong password" required className="text-base" />
-                            </div>
+                        <Form {...form}>
+                            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                                <FormField
+                                    control={form.control}
+                                    name="mobile"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel className="text-primary">Mobile Number</FormLabel>
+                                            <FormControl>
+                                                <Input placeholder="+91 XXXXXXXXXX" {...field} />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="aadhar"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel className="text-primary">Aadhar Number</FormLabel>
+                                            <FormControl>
+                                                <Input placeholder="XXXX XXXX XXXX" {...field} />
+                                            </FormControl>
+                                            <p className="text-xs text-muted-foreground pt-1">We use Aadhar for one-time verification to ensure a safe community.</p>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="password"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Create Password</FormLabel>
+                                              <FormControl>
+                                                <div className="relative">
+                                                  <Input type={showPassword ? "text" : "password"} placeholder="Choose a strong password" {...field} />
+                                                  <button
+                                                    type="button"
+                                                    onClick={() => setShowPassword(!showPassword)}
+                                                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-muted-foreground"
+                                                  >
+                                                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                                                  </button>
+                                                </div>
+                                              </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
 
-                            <div className="space-y-3">
-                                <Label className="text-primary flex items-center gap-2">
-                                    <Tag className="h-4 w-4" />
-                                    Select Your Interests
-                                </Label>
-                                <div className="flex flex-wrap gap-2">
-                                    {interests.map((interest) => (
-                                        <button
-                                            key={interest}
-                                            type="button"
-                                            onClick={() => toggleInterest(interest)}
-                                            className={cn(
-                                                "rounded-full px-3 py-1 text-sm border transition-colors",
-                                                selectedInterests.includes(interest)
-                                                    ? "bg-primary text-primary-foreground border-primary"
-                                                    : "bg-secondary/50 hover:bg-secondary border-transparent"
-                                            )}
-                                        >
-                                            {interest}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
+                                <FormField
+                                  control={form.control}
+                                  name="interests"
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel className="text-primary flex items-center gap-2">
+                                        <Tag className="h-4 w-4" />
+                                        Select Your Interests (min. 3)
+                                      </FormLabel>
+                                       <FormControl>
+                                            <div className="flex flex-wrap gap-2">
+                                                {interests.map((interest) => (
+                                                    <button
+                                                        key={interest}
+                                                        type="button"
+                                                        onClick={() => toggleInterest(interest)}
+                                                        className={cn(
+                                                            "rounded-full px-3 py-1 text-sm border transition-colors",
+                                                            field.value.includes(interest)
+                                                                ? "bg-primary text-primary-foreground border-primary"
+                                                                : "bg-secondary/50 hover:bg-secondary border-transparent"
+                                                        )}
+                                                    >
+                                                        {interest}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                       </FormControl>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
 
-                            <Link href="/browse" passHref>
                                 <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-lg py-6 rounded-xl mt-4">
                                     Verify & Create Profile
                                 </Button>
-                            </Link>
-                        </form>
+                            </form>
+                        </Form>
                         <div className="mt-4 text-center text-sm">
                             Already have an account?{" "}
                             <Link href="/signin" className="underline text-primary">
