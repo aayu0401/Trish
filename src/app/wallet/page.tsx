@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Wallet, CreditCard, PlusCircle, ShoppingBag } from "lucide-react";
+import { Wallet, CreditCard, PlusCircle, ShoppingBag, Heart } from "lucide-react";
 
 export default function WalletPage() {
   return (
@@ -28,11 +28,17 @@ export default function WalletPage() {
               <p className="text-5xl font-bold text-primary">150 <span className="text-2xl text-muted-foreground">coins</span></p>
               <p className="text-sm text-muted-foreground mt-2">Use coins to send virtual gifts and stand out.</p>
             </CardContent>
-            <CardFooter>
-                <Link href="/gifts" passHref className="w-full">
-                  <Button className="w-full bg-accent hover:bg-accent/90">
-                      <ShoppingBag className="mr-2 h-4 w-4"/>
-                      Browse Gift Store
+             <CardFooter className="flex flex-col sm:flex-row gap-4">
+                 <Link href="/gifts" passHref className="w-full">
+                    <Button variant="outline" className="w-full">
+                        <ShoppingBag className="mr-2 h-4 w-4"/>
+                        Browse Gift Store
+                    </Button>
+                </Link>
+                 <Link href="/likes" passHref className="w-full">
+                  <Button className="w-full bg-primary hover:bg-primary/90">
+                      <Heart className="mr-2 h-4 w-4"/>
+                      See Who Likes You
                   </Button>
                 </Link>
             </CardFooter>
