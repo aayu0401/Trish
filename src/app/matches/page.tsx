@@ -7,34 +7,33 @@ import { AppLayout } from "@/components/app-layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { matches } from "@/lib/data";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { MessageSquare } from "lucide-react";
 
 export default function MatchesPage() {
   return (
     <AppLayout>
       <div className="container mx-auto px-4 py-8">
         <header className="mb-8 text-center">
-          <h1 className="text-4xl font-bold font-headline text-primary">Your Matches</h1>
-          <p className="text-muted-foreground">People you've connected with.</p>
+          <h1 className="text-4xl font-bold font-headline text-primary">Chats</h1>
+          <p className="text-muted-foreground">Conversations with your matches.</p>
         </header>
 
         <ScrollArea className="h-[calc(100vh-12rem)]">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="flex flex-col gap-4 max-w-2xl mx-auto">
             {matches.map((match) => (
               <Link href={`/chat/${match.id}`} key={match.id} passHref>
-                <Card className="overflow-hidden rounded-xl shadow-lg transform transition-transform hover:scale-105 cursor-pointer">
-                  <CardContent className="p-0">
-                    <div className="aspect-square relative">
-                      <Image
-                        src={match.photo}
-                        alt={match.name}
-                        fill
-                        className="object-cover"
-                        data-ai-hint={match.data_ai_hint}
-                      />
-                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2">
-                        <p className="text-white font-semibold text-center">{match.name}</p>
-                      </div>
+                <Card className="overflow-hidden rounded-xl shadow-md transform transition-transform hover:scale-105 cursor-pointer hover:bg-secondary/50">
+                  <CardContent className="p-3 flex items-center gap-4">
+                    <Avatar className="h-16 w-16 border-2 border-primary/50">
+                      <AvatarImage src={match.photo} alt={match.name} />
+                      <AvatarFallback>{match.name.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <div className="flex-grow">
+                      <h3 className="font-bold text-lg">{match.name}</h3>
+                      <p className="text-sm text-muted-foreground">It's a match! Send the first message.</p>
                     </div>
+                     <MessageSquare className="h-6 w-6 text-primary/70" />
                   </CardContent>
                 </Card>
               </Link>

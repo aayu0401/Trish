@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Flame, Heart, User, Wallet, ShoppingBag } from "lucide-react";
+import { Flame, MessageSquare, User, Wallet, ShoppingBag } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { href: "/browse", icon: Flame, label: "Browse" },
-  { href: "/matches", icon: Heart, label: "Matches" },
+  { href: "/matches", icon: MessageSquare, label: "Chats" },
   { href: "/gifts", icon: ShoppingBag, label: "Gifts" },
   { href: "/wallet", icon: Wallet, label: "Wallet" },
   { href: "/profile", icon: User, label: "Profile" },
@@ -20,7 +20,7 @@ export function BottomNav() {
     <nav className="fixed bottom-0 left-0 right-0 h-20 bg-background/70 backdrop-blur-lg border-t z-50 md:h-16">
       <div className="flex justify-around items-center h-full max-w-lg mx-auto">
         {navItems.map((item) => {
-          const isActive = pathname === item.href;
+          const isActive = pathname.startsWith(item.href);
           return (
             <Link href={item.href} key={item.href} legacyBehavior passHref>
               <a className="flex flex-col items-center justify-center w-full h-full text-muted-foreground transition-colors duration-300 ease-in-out group">
