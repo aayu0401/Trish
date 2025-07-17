@@ -1,4 +1,5 @@
 
+
 export const currentUser = {
   id: 0,
   name: "You",
@@ -7,6 +8,10 @@ export const currentUser = {
   address: '123, Tech Park, Silicon Valley, Bangalore, 560100',
   identityVerified: false,
   kycVerified: false,
+  gender: 'Man',
+  interestedIn: 'Women', // Can be 'Men', 'Women', or 'Everyone'
+  searchRadius: 50, // in km
+  location: { lat: 12.9716, lon: 77.5946 }, // Bangalore
 };
 
 export const profiles = [
@@ -24,7 +29,9 @@ export const profiles = [
     ],
     data_ai_hint: 'woman portrait',
     fullProfile: 'Art gallery enthusiast, plays the ukulele, and has a cat named "Pixel". Prefers rainy days and cozy coffee shops. Favorite movie genre is documentary.',
-    address: 'A-1, 4th Floor, Art House, Colaba, Mumbai, 400001'
+    address: 'A-1, 4th Floor, Art House, Colaba, Mumbai, 400001',
+    gender: 'Woman',
+    location: { lat: 12.9345, lon: 77.6262 }, // Mumbai (coords are for HSR Layout, Bangalore for demo) - 5km away
   },
   {
     id: 2,
@@ -38,7 +45,9 @@ export const profiles = [
     ],
     data_ai_hint: 'woman smiling',
     fullProfile: 'Enjoys morning runs and weightlifting. Passionate about healthy eating but can\'t resist a good pizza. Volunteers at a local animal shelter on weekends.',
-    address: 'Plot 42, Gymkhana Road, Sector 15, Gurgaon, 122001'
+    address: 'Plot 42, Gymkhana Road, Sector 15, Gurgaon, 122001',
+    gender: 'Woman',
+    location: { lat: 12.9716, lon: 77.5946 }, // Gurgaon (coords are for Bangalore) - 0km away
   },
   {
     id: 3,
@@ -53,7 +62,9 @@ export const profiles = [
     ],
     data_ai_hint: 'woman glasses',
     fullProfile: 'Works in AI research. Loves sci-fi novels and classic films. Trying to perfect the art of making sourdough bread. Believes pineapple on pizza is a crime.',
-    address: 'No. 25, 3rd Main Road, Indiranagar, Bangalore, 560038'
+    address: 'No. 25, 3rd Main Road, Indiranagar, Bangalore, 560038',
+    gender: 'Woman',
+    location: { lat: 13.0400, lon: 77.6420 }, // Indiranagar, Bangalore - 10km away
   },
   {
     id: 4,
@@ -66,8 +77,34 @@ export const profiles = [
     ],
     data_ai_hint: 'woman nature',
     fullProfile: 'Singer-songwriter for a local band. Loves camping and stargazing. A bit of an adrenaline junkie - has tried bungee jumping and skydiving. Learning Spanish.',
-    address: '7, Mountain View Road, Rishikesh, Uttarakhand, 249201'
+    address: '7, Mountain View Road, Rishikesh, Uttarakhand, 249201',
+    gender: 'Woman',
+    location: { lat: 13.1989, lon: 77.7068 }, // Rishikesh (coords for outside Bangalore) - 150km away
   },
+  {
+    id: 5,
+    name: 'Rohan, 29',
+    bio: 'Startup founder and coffee addict. My weekends are for coding and exploring new brunch spots.',
+    interests: ['Startups', 'Coffee', 'Brunch', 'Tech', 'Investing'],
+    photos: [ 'https://placehold.co/600x800.png?5' ],
+    data_ai_hint: 'man portrait',
+    fullProfile: 'Building the next big thing in fintech. Passionate about product design and user experience. Enjoys playing tennis and reading non-fiction.',
+    address: 'Flat 101, Venture Capital Towers, Koramangala, Bangalore, 560095',
+    gender: 'Man',
+    location: { lat: 12.9279, lon: 77.6271 }, // Koramangala, Bangalore - 8km away
+  },
+  {
+    id: 6,
+    name: 'Kabir, 31',
+    bio: 'Filmmaker and storyteller. Always looking for the next great story to tell. Let\'s create one together.',
+    interests: ['Filmmaking', 'Storytelling', 'Photography', 'Cinema', 'Travel'],
+    photos: [ 'https://placehold.co/600x800.png?6' ],
+    data_ai_hint: 'man smiling',
+    fullProfile: 'Independent filmmaker with a passion for documentaries. Spends his free time at film festivals or writing scripts. A big fan of classic rock music.',
+    address: 'Studio 5, Film City, Goregaon, Mumbai, 400065',
+    gender: 'Man',
+    location: { lat: 12.8452, lon: 77.6602 }, // Mumbai (coords for Electronic City) - 25km away
+  }
 ];
 
 export type Match = {

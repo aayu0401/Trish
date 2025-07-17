@@ -19,6 +19,8 @@ type Profile = {
   photos: string[];
   data_ai_hint: string;
   fullProfile: string;
+  gender: string;
+  location: { lat: number, lon: number };
 };
 
 type ProfileCardProps = {
@@ -100,4 +102,3 @@ export function ProfileCard({ profile, onLike, onPass, onGiftSend }: ProfileCard
     </>
   );
 }
-
