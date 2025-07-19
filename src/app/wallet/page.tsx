@@ -25,8 +25,8 @@ export default function WalletPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-5xl font-bold text-primary">150 <span className="text-2xl text-muted-foreground">coins</span></p>
-              <p className="text-sm text-muted-foreground mt-2">Use coins to send virtual gifts and stand out.</p>
+              <p className="text-5xl font-bold text-primary">₹150</p>
+              <p className="text-sm text-muted-foreground mt-2">Use your balance to send virtual gifts and stand out.</p>
             </CardContent>
              <CardFooter className="flex flex-col sm:flex-row gap-4">
                  <Link href="/gifts" passHref className="w-full">
@@ -50,7 +50,7 @@ export default function WalletPage() {
                 <CreditCard className="h-6 w-6 text-primary" />
                 Top Up Balance
               </CardTitle>
-              <CardDescription>Add funds securely to purchase more coins.</CardDescription>
+              <CardDescription>Add funds securely to purchase more gifts.</CardDescription>
             </CardHeader>
             <CardContent>
               <form className="space-y-4">
@@ -70,14 +70,14 @@ export default function WalletPage() {
                 </div>
                 <div className="flex items-center justify-between pt-2">
                     <Label>Amount:</Label>
-                    <span className="font-bold text-xl text-primary">$10.00 (100 coins)</span>
+                    <span className="font-bold text-xl text-primary">₹500</span>
                 </div>
               </form>
             </CardContent>
             <CardFooter>
               <Button className="w-full bg-primary hover:bg-primary/90">
                 <PlusCircle className="mr-2 h-4 w-4"/>
-                Add 100 coins
+                Add ₹500
               </Button>
             </CardFooter>
           </Card>
