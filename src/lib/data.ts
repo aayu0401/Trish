@@ -15,7 +15,7 @@ export const currentUser = {
 };
 
 export const profiles = [
-  {
+    {
     id: 1,
     name: 'Alia, 28',
     bio: 'Wandering soul with a love for art, music, and spontaneous road trips. Let\'s find a gallery to get lost in.',
@@ -42,6 +42,7 @@ export const profiles = [
         'https://placehold.co/600x800.png?2',
         'https://placehold.co/600x800.png?21',
         'https://placehold.co/600x800.png?22',
+        'https://placehold.co/600x800.png?23',
     ],
     data_ai_hint: 'woman smiling',
     fullProfile: 'Enjoys morning runs and weightlifting. Passionate about healthy eating but can\'t resist a good pizza. Volunteers at a local animal shelter on weekends.',
@@ -74,6 +75,7 @@ export const profiles = [
     photos: [
         'https://placehold.co/600x800.png?4',
         'https://placehold.co/600x800.png?41',
+        'https://placehold.co/600x800.png?42',
     ],
     data_ai_hint: 'woman nature',
     fullProfile: 'Singer-songwriter for a local band. Loves camping and stargazing. A bit of an adrenaline junkie - has tried bungee jumping and skydiving. Learning Spanish.',
@@ -86,7 +88,11 @@ export const profiles = [
     name: 'Rohan, 29',
     bio: 'Startup founder and coffee addict. My weekends are for coding and exploring new brunch spots.',
     interests: ['Startups', 'Coffee', 'Brunch', 'Tech', 'Investing'],
-    photos: [ 'https://placehold.co/600x800.png?5' ],
+    photos: [ 
+        'https://placehold.co/600x800.png?5',
+        'https://placehold.co/600x800.png?51',
+        'https://placehold.co/600x800.png?52',
+     ],
     data_ai_hint: 'man portrait',
     fullProfile: 'Building the next big thing in fintech. Passionate about product design and user experience. Enjoys playing tennis and reading non-fiction.',
     address: 'Flat 101, Venture Capital Towers, Koramangala, Bangalore, 560095',
@@ -98,7 +104,10 @@ export const profiles = [
     name: 'Kabir, 31',
     bio: 'Filmmaker and storyteller. Always looking for the next great story to tell. Let\'s create one together.',
     interests: ['Filmmaking', 'Storytelling', 'Photography', 'Cinema', 'Travel'],
-    photos: [ 'https://placehold.co/600x800.png?6' ],
+    photos: [ 
+        'https://placehold.co/600x800.png?6',
+        'https://placehold.co/600x800.png?61',
+    ],
     data_ai_hint: 'man smiling',
     fullProfile: 'Independent filmmaker with a passion for documentaries. Spends his free time at film festivals or writing scripts. A big fan of classic rock music.',
     address: 'Studio 5, Film City, Goregaon, Mumbai, 400065',
@@ -110,7 +119,11 @@ export const profiles = [
     name: 'Meera, 25',
     bio: 'Yoga instructor and vegan foodie. I believe in mindful living and positive energy. Looking for a deep connection.',
     interests: ['Yoga', 'Meditation', 'Veganism', 'Spirituality', 'Sustainability'],
-    photos: [ 'https://placehold.co/600x800.png?7' ],
+    photos: [ 
+        'https://placehold.co/600x800.png?7',
+        'https://placehold.co/600x800.png?71',
+        'https://placehold.co/600x800.png?72',
+    ],
     data_ai_hint: 'woman yoga',
     fullProfile: 'Teaches vinyasa flow yoga. Spends her weekends at farmers markets and exploring vegan cafes. Loves documentary films about nature.',
     address: '12, Yoga Path, Whitefield, Bangalore, 560066',
@@ -122,7 +135,11 @@ export const profiles = [
     name: 'Arjun, 30',
     bio: 'Architect with a passion for design, history, and travel. I enjoy sketching old buildings and trying new cuisines.',
     interests: ['Architecture', 'History', 'Sketching', 'Foodie', 'Travel'],
-    photos: [ 'https://placehold.co/600x800.png?8' ],
+    photos: [ 
+        'https://placehold.co/600x800.png?8',
+        'https://placehold.co/600x800.png?81',
+        'https://placehold.co/600x800.png?82',
+    ],
     data_ai_hint: 'man architect',
     fullProfile: 'Designs modern, sustainable buildings. His hobbies include photography and cycling around the city. Is a massive fan of historical fiction novels.',
     address: '88, Design Quarters, JP Nagar, Bangalore, 560078',
@@ -134,7 +151,12 @@ export const profiles = [
     name: 'Zara, 27',
     bio: 'Fashion designer and globetrotter. My life is a blend of fabrics, colors, and cultures. Seeking a partner for my next adventure.',
     interests: ['Fashion', 'Travel', 'Salsa Dancing', 'Languages', 'Concerts'],
-    photos: [ 'https://placehold.co/600x800.png?9' ],
+    photos: [ 
+        'https://placehold.co/600x800.png?9',
+        'https://placehold.co/600x800.png?91',
+        'https://placehold.co/600x800.png?92',
+        'https://placehold.co/600x800.png?93',
+    ],
     data_ai_hint: 'woman fashion',
     fullProfile: 'Owns a small boutique clothing line. Has traveled to over 20 countries and is fluent in French and Spanish. Loves to dance salsa on weekends.',
     address: 'Design Street, Bandra West, Mumbai, 400050',
