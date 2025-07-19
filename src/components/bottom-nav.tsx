@@ -22,26 +22,28 @@ export function BottomNav() {
         {navItems.map((item) => {
           const isActive = pathname.startsWith(item.href);
           return (
-            <Link href={item.href} key={item.href} legacyBehavior passHref>
-              <a className="flex flex-col items-center justify-center w-full h-full text-muted-foreground transition-colors duration-300 ease-in-out group">
-                <div className={cn("p-3 rounded-full transition-all duration-300", isActive ? "bg-primary/20" : "")}>
-                    <item.icon
-                    className={cn(
-                        "h-7 w-7 transition-all duration-300",
-                        isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground"
-                    )}
-                    strokeWidth={isActive ? 2.5 : 2}
-                    />
-                </div>
-                <span
+            <Link
+              href={item.href}
+              key={item.href}
+              className="flex flex-col items-center justify-center w-full h-full text-muted-foreground transition-colors duration-300 ease-in-out group"
+            >
+              <div className={cn("p-3 rounded-full transition-all duration-300", isActive ? "bg-primary/20" : "")}>
+                <item.icon
                   className={cn(
-                    "text-xs font-medium transition-all duration-300",
-                     isActive ? "text-primary font-semibold" : "group-hover:text-foreground"
+                    "h-7 w-7 transition-all duration-300",
+                    isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground"
                   )}
-                >
-                  {item.label}
-                </span>
-              </a>
+                  strokeWidth={isActive ? 2.5 : 2}
+                />
+              </div>
+              <span
+                className={cn(
+                  "text-xs font-medium transition-all duration-300",
+                  isActive ? "text-primary font-semibold" : "group-hover:text-foreground"
+                )}
+              >
+                {item.label}
+              </span>
             </Link>
           );
         })}
