@@ -87,7 +87,7 @@ export default function ProfilePage() {
               )}
             </div>
              <CardTitle className="mt-4 text-3xl font-bold font-headline">{userProfile.name}</CardTitle>
-             <CardDescription>Joined 2 months ago</CardDescription>
+             <CardDescription>View and manage your profile.</CardDescription>
           </CardHeader>
 
           <CardContent className="p-6 pt-4 text-center">
