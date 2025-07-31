@@ -5,9 +5,8 @@ import Link from "next/link";
 import { Heart, Tag, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { interests } from "@/lib/data";
+import { interests as allInterests } from "@/lib/data";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useForm } from "react-hook-form";
@@ -17,11 +16,18 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { auth, db } from "@/lib/firebase";
+import { doc, setDoc } from "firebase/firestore";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 
 const formSchema = z.object({
+  name: z.string().min(1, "Name is required"),
   email: z.string().email("Please enter a valid email address."),
   password: z.string().min(8, "Password must be at least 8 characters long."),
+  gender: z.enum(["Man", "Woman", "Other"]),
+  interestedIn: z.enum(["Men", "Women", "Everyone"]),
+  bio: z.string().max(200, "Bio must be 200 characters or less.").optional(),
   interests: z.array(z.string()).min(3, "Please select at least 3 interests."),
 });
 
@@ -34,9 +40,11 @@ export default function SignupPage() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
+            name: "",
             email: "",
             password: "",
             interests: [],
+            bio: "",
         },
     });
 
@@ -51,8 +59,21 @@ export default function SignupPage() {
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setIsLoading(true);
         try {
-            // In a real app, you'd also save the interests to a user profile in Firestore
-            await createUserWithEmailAndPassword(auth, values.email, values.password);
+            const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
+            const user = userCredential.user;
+
+            // Create user profile in Firestore
+            await setDoc(doc(db, "users", user.uid), {
+                name: values.name,
+                email: values.email,
+                gender: values.gender,
+                interestedIn: values.interestedIn,
+                bio: values.bio,
+                interests: values.interests,
+                photos: ['https://placehold.co/600x800.png?text=Profile+Photo'], // Default photo
+                createdAt: new Date(),
+            });
+
             toast({
               title: "Account Created!",
               description: "Your profile has been successfully created.",
@@ -91,6 +112,19 @@ export default function SignupPage() {
                     <CardContent>
                         <Form {...form}>
                             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                                <FormField
+                                    control={form.control}
+                                    name="name"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Your Name</FormLabel>
+                                            <FormControl>
+                                                <Input placeholder="What should we call you?" {...field} />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
                                 <FormField
                                     control={form.control}
                                     name="email"
@@ -132,6 +166,67 @@ export default function SignupPage() {
                                     )}
                                 />
 
+                                <div className="flex gap-4">
+                                     <FormField
+                                        control={form.control}
+                                        name="gender"
+                                        render={({ field }) => (
+                                            <FormItem className="w-1/2">
+                                                <FormLabel>You are a</FormLabel>
+                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                    <FormControl>
+                                                        <SelectTrigger>
+                                                            <SelectValue placeholder="Select gender" />
+                                                        </SelectTrigger>
+                                                    </FormControl>
+                                                    <SelectContent>
+                                                        <SelectItem value="Man">Man</SelectItem>
+                                                        <SelectItem value="Woman">Woman</SelectItem>
+                                                        <SelectItem value="Other">Other</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                     <FormField
+                                        control={form.control}
+                                        name="interestedIn"
+                                        render={({ field }) => (
+                                            <FormItem className="w-1/2">
+                                                <FormLabel>Looking for</FormLabel>
+                                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                    <FormControl>
+                                                        <SelectTrigger>
+                                                            <SelectValue placeholder="Select interest" />
+                                                        </SelectTrigger>
+                                                    </FormControl>
+                                                    <SelectContent>
+                                                        <SelectItem value="Men">Men</SelectItem>
+                                                        <SelectItem value="Women">Women</SelectItem>
+                                                        <SelectItem value="Everyone">Everyone</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </div>
+
+                                <FormField
+                                  control={form.control}
+                                  name="bio"
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>Your Bio</FormLabel>
+                                      <FormControl>
+                                        <Textarea placeholder="Tell us a little about yourself..." {...field} />
+                                      </FormControl>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+
                                 <FormField
                                   control={form.control}
                                   name="interests"
@@ -143,7 +238,7 @@ export default function SignupPage() {
                                       </FormLabel>
                                        <FormControl>
                                             <div className="flex flex-wrap gap-2 pt-2">
-                                                {interests.map((interest) => (
+                                                {allInterests.map((interest) => (
                                                     <button
                                                         key={interest}
                                                         type="button"
@@ -182,3 +277,4 @@ export default function SignupPage() {
         </main>
     );
 }
+
