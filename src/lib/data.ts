@@ -234,6 +234,8 @@ export const interests = [
     'Photography', 'Hiking', 'Reading', 'Cooking', 'Gaming', 'Yoga', 'Traveling',
     'Concerts', 'Art', 'Movies', 'Dancing', 'Podcasts', 'DIY Projects', 'Volunteering',
     'Coffee', 'Wine Tasting', 'Board Games', 'Stand-up Comedy', 'Blogging', 'Stargazing',
+    'Fitness', 'Startups', 'Tech', 'Fashion', 'Salsa Dancing', 'History', 'Meditation',
+    'Indie Music', 'Museums', 'Marathons', 'Chess', 'Filmmaking', 'Sustainability'
 ];
 
     
