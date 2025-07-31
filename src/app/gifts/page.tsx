@@ -3,15 +3,18 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { AppLayout } from "@/components/app-layout";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { gifts, Gift } from "@/lib/data";
-import { ShoppingBag, Star, Package, Send, Sparkles } from "lucide-react";
+import { ShoppingBag, Star, Package, Send, Sparkles, Inbox } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { SendGiftDialog } from "@/components/send-gift-dialog";
 import { useMatchStore } from "@/hooks/use-match-store";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { IncomingGiftCard } from "@/components/incoming-gift-card";
 
 const GiftCard = ({ gift, onSendClick }: { gift: Gift; onSendClick: (gift: Gift) => void; }) => {
 
@@ -82,34 +85,52 @@ export default function GiftStorePage() {
       <div className="container mx-auto px-4 py-8">
         <header className="mb-8 text-center">
           <h1 className="text-4xl font-bold font-headline text-primary flex items-center justify-center gap-3">
-            <ShoppingBag className="h-10 w-10"/> Gift Store
+            <ShoppingBag className="h-10 w-10"/> Gift Center
           </h1>
-          <p className="text-muted-foreground">Surprise your matches with virtual and real gifts.</p>
+          <p className="text-muted-foreground">Surprise your matches or manage your incoming gifts.</p>
         </header>
 
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold flex items-center gap-2 mb-4">
-            <Package className="h-6 w-6 text-accent"/>
-            Real Gifts
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {realGifts.map((gift) => (
-              <GiftCard key={gift.name} gift={gift} onSendClick={handleSendClick} />
-            ))}
-          </div>
-        </section>
+        <Tabs defaultValue="store" className="w-full">
+            <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto mb-6">
+                <TabsTrigger value="store">
+                    <ShoppingBag className="mr-2 h-4 w-4"/>
+                    Gift Store
+                </TabsTrigger>
+                <TabsTrigger value="incoming">
+                    <Link href="/gifts/incoming" className="flex items-center">
+                         <Inbox className="mr-2 h-4 w-4"/>
+                        Incoming
+                    </Link>
+                </TabsTrigger>
+            </TabsList>
+            <TabsContent value="store">
+                <section className="mb-12">
+                <h2 className="text-2xl font-bold flex items-center gap-2 mb-4">
+                    <Package className="h-6 w-6 text-accent"/>
+                    Real Gifts
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {realGifts.map((gift) => (
+                    <GiftCard key={gift.name} gift={gift} onSendClick={handleSendClick} />
+                    ))}
+                </div>
+                </section>
 
-        <section>
-          <h2 className="text-2xl font-bold flex items-center gap-2 mb-4">
-             <Sparkles className="h-6 w-6 text-accent"/>
-            Virtual Gifts
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {virtualGifts.map((gift) => (
-              <GiftCard key={gift.name} gift={gift} onSendClick={handleSendClick} />
-            ))}
-          </div>
-        </section>
+                <section>
+                <h2 className="text-2xl font-bold flex items-center gap-2 mb-4">
+                    <Sparkles className="h-6 w-6 text-accent"/>
+                    Virtual Gifts
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {virtualGifts.map((gift) => (
+                    <GiftCard key={gift.name} gift={gift} onSendClick={handleSendClick} />
+                    ))}
+                </div>
+                </section>
+            </TabsContent>
+            {/* The incoming content will be on its own page */}
+            <TabsContent value="incoming"></TabsContent>
+        </Tabs>
       </div>
     </AppLayout>
     {selectedGift && (

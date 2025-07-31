@@ -21,11 +21,11 @@ export const profiles = [
     bio: 'Wandering soul with a love for art, music, and spontaneous road trips. Let\'s find a gallery to get lost in.',
     interests: ['Art', 'Indie Music', 'Travel', 'Photography', 'Museums'],
     photos: [
-        'https://placehold.co/600x800.png?1', 
-        'https://placehold.co/600x800.png?11', 
-        'https://placehold.co/600x800.png?12',
-        'https://placehold.co/600x800.png?13',
-        'https://placehold.co/600x800.png?14',
+        'https://placehold.co/600x800.png?text=woman+portrait+1', 
+        'https://placehold.co/600x800.png?text=woman+portrait+2', 
+        'https://placehold.co/600x800.png?text=woman+portrait+3',
+        'https://placehold.co/600x800.png?text=woman+portrait+4',
+        'https://placehold.co/600x800.png?text=woman+portrait+5',
     ],
     data_ai_hint: 'woman portrait',
     fullProfile: 'Art gallery enthusiast, plays the ukulele, and has a cat named "Pixel". Prefers rainy days and cozy coffee shops. Favorite movie genre is documentary.',
@@ -39,10 +39,10 @@ export const profiles = [
     bio: 'Fitness enthusiast and dog lover. My golden retriever is my world. Looking for a workout partner and fellow foodie.',
     interests: ['Fitness', 'Dogs', 'Cooking', 'Marathons', 'Meal Prep'],
     photos: [
-        'https://placehold.co/600x800.png?2',
-        'https://placehold.co/600x800.png?21',
-        'https://placehold.co/600x800.png?22',
-        'https://placehold.co/600x800.png?23',
+        'https://placehold.co/600x800.png?text=woman+smiling+1',
+        'https://placehold.co/600x800.png?text=woman+smiling+2',
+        'https://placehold.co/600x800.png?text=woman+smiling+3',
+        'https://placehold.co/600x800.png?text=woman+smiling+4',
     ],
     data_ai_hint: 'woman smiling',
     fullProfile: 'Enjoys morning runs and weightlifting. Passionate about healthy eating but can\'t resist a good pizza. Volunteers at a local animal shelter on weekends.',
@@ -56,10 +56,10 @@ export const profiles = [
     bio: 'Bookworm, tech geek, and aspiring chef. I can probably beat you at chess. Challenge me?',
     interests: ['Reading', 'Tech', 'Chess', 'Board Games', 'Podcasts'],
     photos: [
-        'https://placehold.co/600x800.png?3',
-        'https://placehold.co/600x800.png?31',
-        'https://placehold.co/600x800.png?32',
-        'https://placehold.co/600x800.png?33',
+        'https://placehold.co/600x800.png?text=woman+glasses+1',
+        'https://placehold.co/600x800.png?text=woman+glasses+2',
+        'https://placehold.co/600x800.png?text=woman+glasses+3',
+        'https://placehold.co/600x800.png?text=woman+glasses+4',
     ],
     data_ai_hint: 'woman glasses',
     fullProfile: 'Works in AI research. Loves sci-fi novels and classic films. Trying to perfect the art of making sourdough bread. Believes pineapple on pizza is a crime.',
@@ -73,9 +73,9 @@ export const profiles = [
     bio: 'Musician and nature lover. You can find me playing my guitar at the park or hiking up a mountain. Adventure awaits!',
     interests: ['Guitar', 'Hiking', 'Concerts', 'Camping', 'Stargazing'],
     photos: [
-        'https://placehold.co/600x800.png?4',
-        'https://placehold.co/600x800.png?41',
-        'https://placehold.co/600x800.png?42',
+        'https://placehold.co/600x800.png?text=woman+nature+1',
+        'https://placehold.co/600x800.png?text=woman+nature+2',
+        'https://placehold.co/600x800.png?text=woman+nature+3',
     ],
     data_ai_hint: 'woman nature',
     fullProfile: 'Singer-songwriter for a local band. Loves camping and stargazing. A bit of an adrenaline junkie - has tried bungee jumping and skydiving. Learning Spanish.',
@@ -89,9 +89,9 @@ export const profiles = [
     bio: 'Startup founder and coffee addict. My weekends are for coding and exploring new brunch spots.',
     interests: ['Startups', 'Coffee', 'Brunch', 'Tech', 'Investing'],
     photos: [ 
-        'https://placehold.co/600x800.png?5',
-        'https://placehold.co/600x800.png?51',
-        'https://placehold.co/600x800.png?52',
+        'https://placehold.co/600x800.png?text=man+portrait+1',
+        'https://placehold.co/600x800.png?text=man+portrait+2',
+        'https://placehold.co/600x800.png?text=man+portrait+3',
      ],
     data_ai_hint: 'man portrait',
     fullProfile: 'Building the next big thing in fintech. Passionate about product design and user experience. Enjoys playing tennis and reading non-fiction.',
@@ -105,8 +105,8 @@ export const profiles = [
     bio: 'Filmmaker and storyteller. Always looking for the next great story to tell. Let\'s create one together.',
     interests: ['Filmmaking', 'Storytelling', 'Photography', 'Cinema', 'Travel'],
     photos: [ 
-        'https://placehold.co/600x800.png?6',
-        'https://placehold.co/600x800.png?61',
+        'https://placehold.co/600x800.png?text=man+smiling+1',
+        'https://placehold.co/600x800.png?text=man+smiling+2',
     ],
     data_ai_hint: 'man smiling',
     fullProfile: 'Independent filmmaker with a passion for documentaries. Spends his free time at film festivals or writing scripts. A big fan of classic rock music.',
@@ -120,9 +120,9 @@ export const profiles = [
     bio: 'Yoga instructor and vegan foodie. I believe in mindful living and positive energy. Looking for a deep connection.',
     interests: ['Yoga', 'Meditation', 'Veganism', 'Spirituality', 'Sustainability'],
     photos: [ 
-        'https://placehold.co/600x800.png?7',
-        'https://placehold.co/600x800.png?71',
-        'https://placehold.co/600x800.png?72',
+        'https://placehold.co/600x800.png?text=woman+yoga+1',
+        'https://placehold.co/600x800.png?text=woman+yoga+2',
+        'https://placehold.co/600x800.png?text=woman+yoga+3',
     ],
     data_ai_hint: 'woman yoga',
     fullProfile: 'Teaches vinyasa flow yoga. Spends her weekends at farmers markets and exploring vegan cafes. Loves documentary films about nature.',
@@ -136,9 +136,9 @@ export const profiles = [
     bio: 'Architect with a passion for design, history, and travel. I enjoy sketching old buildings and trying new cuisines.',
     interests: ['Architecture', 'History', 'Sketching', 'Foodie', 'Travel'],
     photos: [ 
-        'https://placehold.co/600x800.png?8',
-        'https://placehold.co/600x800.png?81',
-        'https://placehold.co/600x800.png?82',
+        'https://placehold.co/600x800.png?text=man+architect+1',
+        'https://placehold.co/600x800.png?text=man+architect+2',
+        'https://placehold.co/600x800.png?text=man+architect+3',
     ],
     data_ai_hint: 'man architect',
     fullProfile: 'Designs modern, sustainable buildings. His hobbies include photography and cycling around the city. Is a massive fan of historical fiction novels.',
@@ -152,10 +152,10 @@ export const profiles = [
     bio: 'Fashion designer and globetrotter. My life is a blend of fabrics, colors, and cultures. Seeking a partner for my next adventure.',
     interests: ['Fashion', 'Travel', 'Salsa Dancing', 'Languages', 'Concerts'],
     photos: [ 
-        'https://placehold.co/600x800.png?9',
-        'https://placehold.co/600x800.png?91',
-        'https://placehold.co/600x800.png?92',
-        'https://placehold.co/600x800.png?93',
+        'https://placehold.co/600x800.png?text=woman+fashion+1',
+        'https://placehold.co/600x800.png?text=woman+fashion+2',
+        'https://placehold.co/600x800.png?text=woman+fashion+3',
+        'https://placehold.co/600x800.png?text=woman+fashion+4',
     ],
     data_ai_hint: 'woman fashion',
     fullProfile: 'Owns a small boutique clothing line. Has traveled to over 20 countries and is fluent in French and Spanish. Loves to dance salsa on weekends.',
@@ -175,27 +175,60 @@ export type Match = {
 // This is now the initial state for the match store, not the definitive list.
 export const matches: Match[] = [];
 
+type Sender = {
+    name: string;
+    photo: string;
+}
+
 export type Gift = {
+  id: string;
   name: string;
   icon: string;
   type: 'virtual' | 'real';
   description: string;
   cost: number;
   image: string;
+  status?: 'pending' | 'accepted' | 'declined';
+  sender?: Sender;
 };
 
 export const gifts: Gift[] = [
     // Virtual Gifts
-    { name: 'Virtual Rose', icon: 'Flower', type: 'virtual', description: 'A single, elegant virtual rose.', cost: 50, image: 'https://placehold.co/600x400.png?text=Virtual+Rose' },
-    { name: 'Digital Kiss', icon: 'Mail', type: 'virtual', description: 'Send a sweet, animated kiss.', cost: 25, image: 'https://placehold.co/600x400.png?text=Digital+Kiss' },
-    { name: 'Sparkle Effect', icon: 'Sparkles', type: 'virtual', description: 'Make their profile sparkle for a day.', cost: 100, image: 'https://placehold.co/600x400.png?text=Sparkle+Effect' },
-    { name: 'Virtual Cake', icon: 'CakeSlice', type: 'virtual', description: 'A delicious-looking virtual cake slice.', cost: 75, image: 'https://placehold.co/600x400.png?text=Virtual+Cake' },
+    { id: 'g1', name: 'Virtual Rose', icon: 'Flower', type: 'virtual', description: 'A single, elegant virtual rose.', cost: 50, image: 'https://placehold.co/600x400.png?text=Virtual+Rose' },
+    { id: 'g2', name: 'Digital Kiss', icon: 'Mail', type: 'virtual', description: 'Send a sweet, animated kiss.', cost: 25, image: 'https://placehold.co/600x400.png?text=Digital+Kiss' },
+    { id: 'g3', name: 'Sparkle Effect', icon: 'Sparkles', type: 'virtual', description: 'Make their profile sparkle for a day.', cost: 100, image: 'https://placehold.co/600x400.png?text=Sparkle+Effect' },
+    { id: 'g4', name: 'Virtual Cake', icon: 'CakeSlice', type: 'virtual', description: 'A delicious-looking virtual cake slice.', cost: 75, image: 'https://placehold.co/600x400.png?text=Virtual+Cake' },
     
     // Real Gifts
-    { name: 'Bouquet of Roses', icon: 'Flower', type: 'real', description: 'A beautiful bouquet delivered to them.', cost: 1500, image: 'https://placehold.co/600x400.png?text=Bouquet' },
-    { name: 'Gourmet Chocolates', icon: 'Package', type: 'real', description: 'A box of artisanal chocolates.', cost: 800, image: 'https://placehold.co/600x400.png?text=Chocolates' },
-    { name: 'Cafe Date Voucher', icon: 'Coffee', type: 'real', description: 'A voucher for a coffee date at a popular cafe.', cost: 500, image: 'https://placehold.co/600x400.png?text=Cafe+Voucher' },
+    { id: 'g5', name: 'Bouquet of Roses', icon: 'Flower', type: 'real', description: 'A beautiful bouquet delivered to them.', cost: 1500, image: 'https://placehold.co/600x400.png?text=Bouquet' },
+    { id: 'g6', name: 'Gourmet Chocolates', icon: 'Package', type: 'real', description: 'A box of artisanal chocolates.', cost: 800, image: 'https://placehold.co/600x400.png?text=Chocolates' },
+    { id: 'g7', name: 'Cafe Date Voucher', icon: 'Coffee', type: 'real', description: 'A voucher for a coffee date at a popular cafe.', cost: 500, image: 'https://placehold.co/600x400.png?text=Cafe+Voucher' },
 ];
+
+export const incomingGifts: Gift[] = [
+    { 
+        id: 'g6', 
+        name: 'Gourmet Chocolates', 
+        icon: 'Package', 
+        type: 'real', 
+        description: 'A box of artisanal chocolates.', 
+        cost: 800, 
+        image: 'https://placehold.co/600x400.png?text=Chocolates',
+        status: 'pending',
+        sender: { name: 'Rohan, 29', photo: 'https://placehold.co/100x100.png?text=R' }
+    },
+    { 
+        id: 'g5', 
+        name: 'Bouquet of Roses', 
+        icon: 'Flower', 
+        type: 'real', 
+        description: 'A beautiful bouquet delivered to them.', 
+        cost: 1500, 
+        image: 'https://placehold.co/600x400.png?text=Bouquet',
+        status: 'pending',
+        sender: { name: 'Kabir, 31', photo: 'https://placehold.co/100x100.png?text=K' }
+    }
+]
 
 export const interests = [
     'Photography', 'Hiking', 'Reading', 'Cooking', 'Gaming', 'Yoga', 'Traveling',

@@ -172,8 +172,8 @@ export default function SignupPage() {
             <div className="w-full max-w-md my-8">
                 <Card className="shadow-2xl rounded-2xl border-primary/20 bg-secondary/20">
                     <CardHeader className="text-center">
-                        <div className="mx-auto bg-primary text-primary-foreground rounded-full p-3 w-fit mb-4 shadow-lg shadow-primary/30">
-                            <Heart className="h-8 w-8" />
+                        <div className="mx-auto bg-primary text-primary-foreground rounded-full p-4 w-fit mb-4 shadow-lg shadow-primary/30">
+                            <Heart className="h-10 w-10" />
                         </div>
                         <CardTitle className="text-4xl font-headline font-bold text-foreground">Create Your Profile</CardTitle>
                         <CardDescription className="text-muted-foreground pt-2">
