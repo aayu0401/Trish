@@ -14,9 +14,11 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 
 const formSchema = z.object({
-  mobile: z.string().regex(/^\+91\s[1-9][0-9]{9}$/, "Please enter a valid Indian mobile number (+91 XXXXXXXXXX)."),
+  email: z.string().email("Please enter a valid email address."),
   password: z.string().min(1, "Password is required."),
 });
 
@@ -24,31 +26,34 @@ export default function SigninPage() {
   const router = useRouter();
   const { toast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      mobile: "+91 ",
+      email: "",
       password: "",
     },
   });
 
-  const handleMobileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value.replace(/\D/g, '');
-    if (value.startsWith('91')) {
-      value = value.substring(2);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
+    try {
+      await signInWithEmailAndPassword(auth, values.email, values.password);
+      toast({
+        title: "Signed In Successfully!",
+        description: "Welcome back!",
+      });
+      router.push("/browse");
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: error.message,
+      });
+    } finally {
+        setIsLoading(false);
     }
-    const formattedValue = `+91 ${value.substring(0, 10)}`;
-    form.setValue('mobile', formattedValue.trim());
-  };
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    toast({
-      title: "Signed In Successfully!",
-      description: "Welcome back!",
-    });
-    router.push("/browse");
   }
 
   return (
@@ -75,15 +80,15 @@ export default function SigninPage() {
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
                   control={form.control}
-                  name="mobile"
+                  name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Mobile Number</FormLabel>
+                      <FormLabel>Email Address</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="+91 XXXXXXXXXX"
+                          type="email"
+                          placeholder="you@example.com"
                           {...field}
-                          onChange={handleMobileChange}
                         />
                       </FormControl>
                       <FormMessage />
@@ -112,8 +117,8 @@ export default function SigninPage() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-lg py-6 rounded-xl shadow-lg shadow-primary/20">
-                  Sign In
+                <Button type="submit" disabled={isLoading} className="w-full bg-primary hover:bg-primary/90 text-lg py-6 rounded-xl shadow-lg shadow-primary/20">
+                  {isLoading ? 'Signing In...' : 'Sign In'}
                 </Button>
               </form>
             </Form>

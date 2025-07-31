@@ -16,10 +16,11 @@ import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 
 const formSchema = z.object({
-  mobile: z.string().regex(/^\+91\s[1-9][0-9]{9}$/, "Please enter a valid Indian mobile number (+91 XXXXXXXXXX)."),
-  aadhar: z.string().regex(/^[0-9]{4}\s[0-9]{4}\s[0-9]{4}$/, "Please enter a valid 12-digit Aadhar number."),
+  email: z.string().email("Please enter a valid email address."),
   password: z.string().min(8, "Password must be at least 8 characters long."),
   interests: z.array(z.string()).min(3, "Please select at least 3 interests."),
 });
@@ -28,31 +29,16 @@ export default function SignupPage() {
     const router = useRouter();
     const { toast } = useToast();
     const [showPassword, setShowPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            mobile: "+91 ",
-            aadhar: "",
+            email: "",
             password: "",
             interests: [],
         },
     });
-
-    const handleMobileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      let value = e.target.value.replace(/\D/g, '');
-      if (value.startsWith('91')) {
-          value = value.substring(2);
-      }
-      const formattedValue = `+91 ${value.substring(0, 10)}`;
-      form.setValue('mobile', formattedValue.trim());
-    };
-
-    const handleAadharChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value.replace(/\D/g, '').substring(0, 12);
-        const formattedValue = value.replace(/(\d{4})(?=\d)/g, '$1 ').trim();
-        form.setValue('aadhar', formattedValue);
-    };
 
     const toggleInterest = (interest: string) => {
         const currentInterests = form.getValues("interests");
@@ -62,13 +48,25 @@ export default function SignupPage() {
         form.setValue("interests", newInterests, { shouldValidate: true });
     };
     
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values);
-        toast({
-          title: "Account Created!",
-          description: "Your profile has been successfully created.",
-        });
-        router.push("/browse");
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        setIsLoading(true);
+        try {
+            // In a real app, you'd also save the interests to a user profile in Firestore
+            await createUserWithEmailAndPassword(auth, values.email, values.password);
+            toast({
+              title: "Account Created!",
+              description: "Your profile has been successfully created.",
+            });
+            router.push("/browse");
+        } catch (error: any) {
+             toast({
+              variant: "destructive",
+              title: "Uh oh! Something went wrong.",
+              description: error.message,
+            });
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     return (
@@ -87,7 +85,7 @@ export default function SignupPage() {
                         </div>
                         <CardTitle className="text-4xl font-headline font-bold text-foreground">Create Your Profile</CardTitle>
                         <CardDescription className="text-muted-foreground pt-2">
-                            Secure dating with Aadhar verification. No bots, real connections.
+                           Join a community of real, verified users.
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -95,39 +93,22 @@ export default function SignupPage() {
                             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                                 <FormField
                                     control={form.control}
-                                    name="mobile"
+                                    name="email"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Mobile Number</FormLabel>
+                                            <FormLabel>Email Address</FormLabel>
                                             <FormControl>
                                                 <Input
-                                                  placeholder="+91 XXXXXXXXXX"
+                                                  type="email"
+                                                  placeholder="you@example.com"
                                                   {...field}
-                                                  onChange={handleMobileChange}
                                                 />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
                                     )}
                                 />
-                                <FormField
-                                    control={form.control}
-                                    name="aadhar"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Aadhar Number</FormLabel>
-                                            <FormControl>
-                                                <Input 
-                                                  placeholder="XXXX XXXX XXXX" 
-                                                  {...field}
-                                                  onChange={handleAadharChange}
-                                                />
-                                            </FormControl>
-                                            <p className="text-xs text-muted-foreground pt-1">We use Aadhar for one-time verification to ensure a safe community.</p>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
+                                
                                 <FormField
                                     control={form.control}
                                     name="password"
@@ -184,8 +165,8 @@ export default function SignupPage() {
                                   )}
                                 />
 
-                                <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-lg py-6 rounded-xl mt-4 shadow-lg shadow-primary/20">
-                                    Verify & Create Profile
+                                <Button type="submit" disabled={isLoading} className="w-full bg-primary hover:bg-primary/90 text-lg py-6 rounded-xl mt-4 shadow-lg shadow-primary/20">
+                                    {isLoading ? 'Creating Account...' : 'Create Profile'}
                                 </Button>
                             </form>
                         </Form>
