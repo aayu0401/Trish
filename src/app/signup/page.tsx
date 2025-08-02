@@ -21,6 +21,7 @@ import { doc, setDoc, getDoc } from "firebase/firestore";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -60,6 +61,7 @@ export default function SignupPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+    const [firebaseError, setFirebaseError] = useState<string | null>(null);
     
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -82,6 +84,7 @@ export default function SignupPage() {
     
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setIsLoading(true);
+        setFirebaseError(null);
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
             const user = userCredential.user;
@@ -104,11 +107,21 @@ export default function SignupPage() {
             });
             router.push("/browse");
         } catch (error: any) {
-             toast({
-              variant: "destructive",
-              title: "Uh oh! Something went wrong.",
-              description: error.message,
-            });
+            switch (error.code) {
+                case 'auth/email-already-in-use':
+                  setFirebaseError('This email address is already in use by another account.');
+                  break;
+                case 'auth/weak-password':
+                  setFirebaseError('The password is too weak. Please choose a stronger password.');
+                  break;
+                case 'auth/invalid-email':
+                  setFirebaseError('Please enter a valid email address.');
+                  break;
+                default:
+                  setFirebaseError('An unexpected error occurred. Please try again.');
+                  console.error(error);
+                  break;
+            }
         } finally {
             setIsLoading(false);
         }
@@ -116,6 +129,7 @@ export default function SignupPage() {
 
     async function handleGoogleSignIn() {
         setIsGoogleLoading(true);
+        setFirebaseError(null);
         const provider = new GoogleAuthProvider();
         try {
             const result = await signInWithPopup(auth, provider);
@@ -151,11 +165,7 @@ export default function SignupPage() {
             }
             router.push("/browse");
         } catch (error: any) {
-            toast({
-                variant: "destructive",
-                title: "Google Sign-In Failed.",
-                description: error.message,
-            });
+            setFirebaseError(error.message);
         } finally {
             setIsGoogleLoading(false);
         }
@@ -200,6 +210,11 @@ export default function SignupPage() {
 
                         <Form {...form}>
                             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                                {firebaseError && (
+                                    <Alert variant="destructive">
+                                        <AlertDescription>{firebaseError}</AlertDescription>
+                                    </Alert>
+                                )}
                                 <FormField
                                     control={form.control}
                                     name="name"

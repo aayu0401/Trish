@@ -16,6 +16,7 @@ import { useToast } from "@/hooks/use-toast";
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { Separator } from "@/components/ui/separator";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email address."),
@@ -51,6 +52,7 @@ export default function SigninPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [firebaseError, setFirebaseError] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -62,6 +64,7 @@ export default function SigninPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
+    setFirebaseError(null);
     try {
       await signInWithEmailAndPassword(auth, values.email, values.password);
       toast({
@@ -70,11 +73,24 @@ export default function SigninPage() {
       });
       router.push("/browse");
     } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: error.message,
-      });
+       switch (error.code) {
+        case 'auth/user-not-found':
+          setFirebaseError('No account found with this email address.');
+          break;
+        case 'auth/wrong-password':
+          setFirebaseError('Incorrect password. Please try again.');
+          break;
+        case 'auth/invalid-credential':
+             setFirebaseError('The email or password you entered is incorrect.');
+             break;
+        case 'auth/invalid-email':
+          setFirebaseError('Please enter a valid email address.');
+          break;
+        default:
+          setFirebaseError('An unexpected error occurred. Please try again.');
+          console.error(error);
+          break;
+      }
     } finally {
         setIsLoading(false);
     }
@@ -82,6 +98,7 @@ export default function SigninPage() {
 
    async function handleGoogleSignIn() {
     setIsGoogleLoading(true);
+    setFirebaseError(null);
     try {
         const provider = new GoogleAuthProvider();
         await signInWithPopup(auth, provider);
@@ -91,11 +108,7 @@ export default function SigninPage() {
         });
         router.push("/browse");
     } catch (error: any) {
-       toast({
-        variant: "destructive",
-        title: "Google Sign-In Failed",
-        description: error.message,
-      });
+        setFirebaseError(error.message);
     } finally {
       setIsGoogleLoading(false);
     }
@@ -123,6 +136,11 @@ export default function SigninPage() {
           <CardContent>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                 {firebaseError && (
+                    <Alert variant="destructive">
+                        <AlertDescription>{firebaseError}</AlertDescription>
+                    </Alert>
+                 )}
                 <FormField
                   control={form.control}
                   name="email"
