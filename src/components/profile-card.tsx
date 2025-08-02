@@ -56,7 +56,7 @@ export function ProfileCard({ profile, onLike, onPass, onGiftSend }: ProfileCard
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-          <h2 className="text-4xl font-bold font-headline">{profile.name}</h2>
+          <div className="text-4xl font-bold font-headline">{profile.name}</div>
           <p className="mt-2 text-base font-light">{profile.bio}</p>
           <div className="flex flex-wrap gap-2 mt-4">
             {profile.interests.map((interest) => (
@@ -67,7 +67,7 @@ export function ProfileCard({ profile, onLike, onPass, onGiftSend }: ProfileCard
           </div>
         </div>
       </Card>
-      <CardFooter className="flex justify-center items-center gap-4 mt-6">
+      <div className="flex justify-center items-center gap-4 mt-6">
         <Button
           variant="outline"
           size="icon"
@@ -92,7 +92,7 @@ export function ProfileCard({ profile, onLike, onPass, onGiftSend }: ProfileCard
         >
           <Heart className="h-10 w-10 text-green-400" />
         </Button>
-      </CardFooter>
+      </div>
       <GiftDialog
         isOpen={isGiftDialogOpen}
         onOpenChange={setIsGiftDialogOpen}

@@ -204,10 +204,10 @@ export default function ChatPage() {
       <AlertDialog open={isUnmatchAlertOpen} onOpenChange={setIsUnmatchAlertOpen}>
         <AlertDialogContent>
             <AlertDialogHeader>
-                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                <AlertDialogDescription>
+                <div className="text-lg font-semibold">Are you sure?</div>
+                <div className="text-sm text-muted-foreground">
                     This will permanently remove {match.name.split(',')[0]} from your matches and delete your conversation history. This action cannot be undone.
-                </AlertDialogDescription>
+                </div>
             </AlertDialogHeader>
             <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
