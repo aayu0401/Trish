@@ -7,9 +7,7 @@
  * - VerifyIdentityInput - The input type for the verifyIdentity function.
  * - VerifyIdentityOutput - The return type for the verifyIdentity function.
  */
-
-import { ai } from '@/ai/genkit';
-import { z } from 'genkit';
+import { z } from 'zod';
 
 const VerifyIdentityInputSchema = z.object({
     livePhotoDataUri: z
@@ -34,40 +32,13 @@ const VerifyIdentityOutputSchema = z.object({
 export type VerifyIdentityOutput = z.infer<typeof VerifyIdentityOutputSchema>;
 
 export async function verifyIdentity(input: VerifyIdentityInput): Promise<VerifyIdentityOutput> {
-    return verifyIdentityFlow(input);
+     // Mock implementation
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve({
+                isMatch: true,
+                reason: 'Facial features appear to be a match.',
+            });
+        }, 2000);
+    });
 }
-
-const prompt = ai.definePrompt({
-    name: 'verifyIdentityPrompt',
-    input: { schema: VerifyIdentityInputSchema },
-    output: { schema: VerifyIdentityOutputSchema },
-    prompt: `You are a highly accurate AI identity verification agent. Your task is to determine if two photos are of the same person.
-
-    You will be given a live photo captured from a webcam and a main profile photo.
-
-    Analyze key facial features in both images (e.g., eye shape, nose, jawline, unique markers). Account for minor variations like lighting, expression, and hairstyle.
-
-    - If you are confident they are the same person, set isMatch to true.
-    - If you are confident they are different people, or if the live photo is unclear (e.g., blurry, dark, face obscured), set isMatch to false.
-
-    Provide a concise reason for your decision in the 'reason' field.
-
-    Live Photo:
-    {{media url=livePhotoDataUri}}
-
-    Profile Photo:
-    {{media url=profilePhotoUrl}}
-`,
-});
-
-const verifyIdentityFlow = ai.defineFlow(
-    {
-        name: 'verifyIdentityFlow',
-        inputSchema: VerifyIdentityInputSchema,
-        outputSchema: VerifyIdentityOutputSchema,
-    },
-    async (input) => {
-        const { output } = await prompt(input);
-        return output!;
-    }
-);

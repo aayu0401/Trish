@@ -8,8 +8,7 @@
  * - VerifyChatOutput - The return type for the verifyChatMessage function.
  */
 
-import { ai } from '@/ai/genkit';
-import { z } from 'genkit';
+import { z } from 'zod';
 
 const VerifyChatInputSchema = z.object({
   message: z.string().describe('The chat message to be verified.'),
@@ -30,55 +29,10 @@ const VerifyChatOutputSchema = z.object({
 export type VerifyChatOutput = z.infer<typeof VerifyChatOutputSchema>;
 
 export async function verifyChatMessage(input: VerifyChatInput): Promise<VerifyChatOutput> {
-  return verifyChatFlow(input);
+  // Mock implementation
+  return Promise.resolve({
+    isSafe: true,
+    reason: '',
+    classification: 'safe',
+  });
 }
-
-const prompt = ai.definePrompt({
-  name: 'verifyChatPrompt',
-  input: { schema: VerifyChatInputSchema },
-  output: { schema: VerifyChatOutputSchema },
-  prompt: `You are a chat message moderation AI for a dating app. Your role is to ensure the safety and comfort of our users by identifying and flagging inappropriate content.
-
-  Analyze the following message based on these rules:
-  1.  **No Harassment:** Personal attacks, insults, bullying, or threatening language are not allowed.
-  2.  **No Spam:** Unsolicited advertisements, promotions, or repetitive messages are considered spam.
-  3.  **No Inappropriate Content:** Explicit or suggestive content is forbidden.
-  4.  **General Safety:** Do not allow the exchange of sensitive personal information like phone numbers, addresses, or financial details in the initial conversations.
-
-  Based on your analysis, classify the message and determine if it is safe. If it is not safe, provide a clear and concise reason for the user.
-
-  Message: "{{{message}}}"
-`,
-config: {
-    safetySettings: [
-      {
-        category: 'HARM_CATEGORY_HATE_SPEECH',
-        threshold: 'BLOCK_MEDIUM_AND_ABOVE',
-      },
-      {
-        category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
-        threshold: 'BLOCK_MEDIUM_AND_ABOVE',
-      },
-      {
-        category: 'HARM_CATEGORY_HARASSMENT',
-        threshold: 'BLOCK_MEDIUM_AND_ABOVE',
-      },
-      {
-        category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
-        threshold: 'BLOCK_MEDIUM_AND_ABOVE',
-      },
-    ],
-  },
-});
-
-const verifyChatFlow = ai.defineFlow(
-  {
-    name: 'verifyChatFlow',
-    inputSchema: VerifyChatInputSchema,
-    outputSchema: VerifyChatOutputSchema,
-  },
-  async (input) => {
-    const { output } = await prompt(input);
-    return output!;
-  }
-);

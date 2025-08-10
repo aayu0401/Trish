@@ -8,8 +8,7 @@
  * - VerifyPanCardOutput - The return type for the verifyPanCard function.
  */
 
-import { ai } from '@/ai/genkit';
-import { z } from 'genkit';
+import { z } from 'zod';
 
 const VerifyPanCardInputSchema = z.object({
   panNumber: z
@@ -40,39 +39,15 @@ export type VerifyPanCardOutput = z.infer<typeof VerifyPanCardOutputSchema>;
 export async function verifyPanCard(
   input: VerifyPanCardInput
 ): Promise<VerifyPanCardOutput> {
-  return verifyPanCardFlow(input);
+  // Mock implementation
+  return new Promise(resolve => {
+    setTimeout(() => {
+        resolve({
+            isVerified: true,
+            reason: 'Details verified successfully.',
+            extractedName: 'John Doe',
+            extractedPan: input.panNumber,
+        });
+    }, 2000);
+  });
 }
-
-const prompt = ai.definePrompt({
-  name: 'verifyPanCardPrompt',
-  input: { schema: VerifyPanCardInputSchema },
-  output: { schema: VerifyPanCardOutputSchema },
-  prompt: `You are a highly accurate KYC verification AI agent specializing in Indian PAN cards. Your task is to verify a user's PAN card by extracting information from an image and comparing it with the user-provided details.
-
-  **Instructions:**
-  1.  **Extract Information:** From the provided PAN card image, extract the full name and the 10-character PAN number.
-  2.  **Validate PAN Format:** The PAN number from the image must be in the format 'ABCDE1234F'.
-  3.  **Compare PAN Numbers:** The extracted PAN number must exactly match the user-provided PAN number.
-  4.  **Assess Image Quality:** The image must be clear, not blurry, and not have any glare obscuring the details.
-  5.  **Make a Decision:**
-      *   If the extracted PAN matches the provided PAN, the format is valid, and the image is clear, set \`isVerified\` to \`true\`.
-      *   In all other cases (mismatch, blurriness, glare, invalid format), set \`isVerified\` to \`false\`.
-  6.  **Provide Reason:** Give a concise reason for your decision. For success, say "Details verified successfully." For failure, explain the exact issue (e.g., "PAN number in image does not match provided number," "Image is too blurry to read.").
-
-  **User-provided PAN Number:** {{{panNumber}}}
-  **PAN Card Image:**
-  {{media url=panCardDataUri}}
-`,
-});
-
-const verifyPanCardFlow = ai.defineFlow(
-  {
-    name: 'verifyPanCardFlow',
-    inputSchema: VerifyPanCardInputSchema,
-    outputSchema: VerifyPanCardOutputSchema,
-  },
-  async (input) => {
-    const { output } = await prompt(input);
-    return output!;
-  }
-);

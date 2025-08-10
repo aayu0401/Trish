@@ -13,8 +13,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { auth } from "@/lib/firebase";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
@@ -66,31 +64,16 @@ export default function SigninPage() {
     setIsLoading(true);
     setFirebaseError(null);
     try {
-      await signInWithEmailAndPassword(auth, values.email, values.password);
+      // MOCK: Simulate successful login
+      await new Promise(resolve => setTimeout(resolve, 1000));
       toast({
         title: "Signed In Successfully!",
         description: "Welcome back!",
       });
       router.push("/browse");
     } catch (error: any) {
-       switch (error.code) {
-        case 'auth/user-not-found':
-          setFirebaseError('No account found with this email address.');
-          break;
-        case 'auth/wrong-password':
-          setFirebaseError('Incorrect password. Please try again.');
-          break;
-        case 'auth/invalid-credential':
-             setFirebaseError('The email or password you entered is incorrect.');
-             break;
-        case 'auth/invalid-email':
-          setFirebaseError('Please enter a valid email address.');
-          break;
-        default:
-          setFirebaseError('An unexpected error occurred. Please try again.');
-          console.error(error);
-          break;
-      }
+       // You can add mock error handling here if needed
+       setFirebaseError('An unexpected error occurred. Please try again.');
     } finally {
         setIsLoading(false);
     }
@@ -100,15 +83,15 @@ export default function SigninPage() {
     setIsGoogleLoading(true);
     setFirebaseError(null);
     try {
-        const provider = new GoogleAuthProvider();
-        await signInWithPopup(auth, provider);
+        // MOCK: Simulate successful Google sign-in
+        await new Promise(resolve => setTimeout(resolve, 1000));
         toast({
             title: "Signed In Successfully!",
             description: "Welcome back!",
         });
         router.push("/browse");
     } catch (error: any) {
-        setFirebaseError(error.message);
+        setFirebaseError("Google sign-in is currently unavailable.");
     } finally {
       setIsGoogleLoading(false);
     }

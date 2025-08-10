@@ -15,9 +15,6 @@ import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
-import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { auth, db } from "@/lib/firebase";
-import { doc, setDoc, getDoc } from "firebase/firestore";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
@@ -86,42 +83,15 @@ export default function SignupPage() {
         setIsLoading(true);
         setFirebaseError(null);
         try {
-            const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
-            const user = userCredential.user;
-
-            // Create user profile in Firestore
-            await setDoc(doc(db, "users", user.uid), {
-                name: values.name,
-                email: values.email,
-                gender: values.gender,
-                interestedIn: values.interestedIn,
-                bio: values.bio,
-                interests: values.interests,
-                photos: ['https://placehold.co/600x800.png?text=Profile+Photo'], // Default photo
-                createdAt: new Date(),
-            });
-
+            // MOCK: Simulate account creation
+            await new Promise(resolve => setTimeout(resolve, 1000));
             toast({
               title: "Account Created!",
               description: "Your profile has been successfully created.",
             });
             router.push("/browse");
         } catch (error: any) {
-            switch (error.code) {
-                case 'auth/email-already-in-use':
-                  setFirebaseError('This email address is already in use by another account.');
-                  break;
-                case 'auth/weak-password':
-                  setFirebaseError('The password is too weak. Please choose a stronger password.');
-                  break;
-                case 'auth/invalid-email':
-                  setFirebaseError('Please enter a valid email address.');
-                  break;
-                default:
-                  setFirebaseError('An unexpected error occurred. Please try again.');
-                  console.error(error);
-                  break;
-            }
+            setFirebaseError('An unexpected error occurred. Please try again.');
         } finally {
             setIsLoading(false);
         }
@@ -130,42 +100,16 @@ export default function SignupPage() {
     async function handleGoogleSignIn() {
         setIsGoogleLoading(true);
         setFirebaseError(null);
-        const provider = new GoogleAuthProvider();
         try {
-            const result = await signInWithPopup(auth, provider);
-            const user = result.user;
-            
-            // Check if user exists in Firestore
-            const userDocRef = doc(db, "users", user.uid);
-            const userDoc = await getDoc(userDocRef);
-
-            if (!userDoc.exists()) {
-                // If new user, create a basic profile
-                 await setDoc(userDocRef, {
-                    name: user.displayName || "New User",
-                    email: user.email,
-                    photos: [user.photoURL || 'https://placehold.co/600x800.png?text=Profile+Photo'],
-                    createdAt: new Date(),
-                    // You might want to redirect to a profile completion page
-                    // or set default values here.
-                    gender: 'Other',
-                    interestedIn: 'Everyone',
-                    bio: 'Just joined!',
-                    interests: ['Newbie'],
-                 });
-                 toast({
-                    title: "Welcome!",
-                    description: "Your account is created. Don't forget to complete your profile!",
-                 });
-            } else {
-                 toast({
-                    title: "Signed In Successfully!",
-                    description: "Welcome back!",
-                 });
-            }
+            // MOCK: Simulate successful Google sign-in
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            toast({
+                title: "Welcome!",
+                description: "Your account is created. Don't forget to complete your profile!",
+            });
             router.push("/browse");
         } catch (error: any) {
-            setFirebaseError(error.message);
+            setFirebaseError("Google sign-in is currently unavailable.");
         } finally {
             setIsGoogleLoading(false);
         }
@@ -303,7 +247,7 @@ export default function SignupPage() {
                                                     <FormControl>
                                                         <SelectTrigger>
                                                             <SelectValue placeholder="Select interest" />
-                                                        </SelectTrigger>
+                                                        </Trigger>
                                                     </FormControl>
                                                     <SelectContent>
                                                         <SelectItem value="Men">Men</SelectItem>

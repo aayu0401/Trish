@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -8,8 +9,7 @@
  * - SuggestIceBreakerOutput - The return type for the suggestIceBreaker function.
  */
 
-import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import { z } from 'zod';
 
 const SuggestIceBreakerInputSchema = z.object({
   userProfile: z
@@ -33,35 +33,14 @@ const SuggestIceBreakerOutputSchema = z.object({
 export type SuggestIceBreakerOutput = z.infer<typeof SuggestIceBreakerOutputSchema>;
 
 export async function suggestIceBreaker(input: SuggestIceBreakerInput): Promise<SuggestIceBreakerOutput> {
-  return suggestIceBreakerFlow(input);
+  // Mock implementation
+  return new Promise(resolve => {
+    setTimeout(() => {
+        resolve({
+            iceBreakerSuggestion: `I see we both love hiking! What's the most adventurous trail you've ever been on?`,
+            reasoning: 'Both profiles mention a love for hiking and adventure. This question is open-ended and directly relates to a shared interest, making it a great conversation starter.',
+            isAligned: true,
+        });
+    }, 1000);
+  });
 }
-
-const prompt = ai.definePrompt({
-  name: 'suggestIceBreakerPrompt',
-  input: {schema: SuggestIceBreakerInputSchema},
-  output: {schema: SuggestIceBreakerOutputSchema},
-  prompt: `You are a dating assistant AI that helps users start conversations with their matches.
-
-  Based on the user's profile and the match's profile, you will suggest an ice-breaker message that is relevant to both of them.  You must also include reasoning for why the suggestion is relevant to both profiles.
-
-  User Profile: {{{userProfile}}}
-  Match Profile: {{{matchProfile}}}
-
-  Pay special attention to extracting shared interests and experiences from the profiles. The ice breaker message should be casual and inviting to encourage a response.
-  You will also make a determination of whether the suggested topics are aligned to the profiles of the users involved, and set the isAligned output field appropriately.
-
-  Output the ice breaker suggestion, reasoning, and alignment as a JSON object.
-`,
-});
-
-const suggestIceBreakerFlow = ai.defineFlow(
-  {
-    name: 'suggestIceBreakerFlow',
-    inputSchema: SuggestIceBreakerInputSchema,
-    outputSchema: SuggestIceBreakerOutputSchema,
-  },
-  async input => {
-    const {output} = await prompt(input);
-    return output!;
-  }
-);
