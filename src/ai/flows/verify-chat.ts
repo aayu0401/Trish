@@ -8,6 +8,7 @@
  * - VerifyChatOutput - The return type for the verifyChatMessage function.
  */
 
+import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 
 const VerifyChatInputSchema = z.object({
@@ -28,11 +29,37 @@ const VerifyChatOutputSchema = z.object({
 });
 export type VerifyChatOutput = z.infer<typeof VerifyChatOutputSchema>;
 
+
 export async function verifyChatMessage(input: VerifyChatInput): Promise<VerifyChatOutput> {
-  // Mock implementation
-  return Promise.resolve({
-    isSafe: true,
-    reason: '',
-    classification: 'safe',
-  });
+    return verifyChatFlow(input);
 }
+
+const prompt = ai.definePrompt({
+    name: 'verifyChatPrompt',
+    input: { schema: VerifyChatInputSchema },
+    output: { schema: VerifyChatOutputSchema },
+    prompt: `You are a chat moderator for a dating app. Your job is to ensure that messages are safe, respectful, and do not violate our community guidelines.
+
+Guidelines:
+- No harassment or hate speech.
+- No spam or promotional content.
+- No sexually explicit content.
+- No sharing of private contact information (phone numbers, email addresses, etc.).
+
+Please analyze the following message and determine if it is safe. Provide a classification and a reason if it is not safe.
+
+Message: "{{message}}"
+`,
+});
+
+const verifyChatFlow = ai.defineFlow(
+    {
+        name: 'verifyChatFlow',
+        inputSchema: VerifyChatInputSchema,
+        outputSchema: VerifyChatOutputSchema,
+    },
+    async (input) => {
+        const { output } = await prompt(input);
+        return output!;
+    }
+);

@@ -7,7 +7,7 @@
  * - VerifyPanCardInput - The input type for the verifyPanCard function.
  * - VerifyPanCardOutput - The return type for the verifyPanCard function.
  */
-
+import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 
 const VerifyPanCardInputSchema = z.object({
@@ -36,18 +36,40 @@ const VerifyPanCardOutputSchema = z.object({
 });
 export type VerifyPanCardOutput = z.infer<typeof VerifyPanCardOutputSchema>;
 
+
 export async function verifyPanCard(
   input: VerifyPanCardInput
 ): Promise<VerifyPanCardOutput> {
-  // Mock implementation
-  return new Promise(resolve => {
-    setTimeout(() => {
-        resolve({
-            isVerified: true,
-            reason: 'Details verified successfully.',
-            extractedName: 'John Doe',
-            extractedPan: input.panNumber,
-        });
-    }, 2000);
-  });
+  return verifyPanCardFlow(input);
 }
+
+
+const prompt = ai.definePrompt({
+    name: 'verifyPanCardPrompt',
+    input: { schema: VerifyPanCardInputSchema },
+    output: { schema: VerifyPanCardOutputSchema },
+    prompt: `You are an AI KYC verification agent. Your task is to verify a user's PAN card.
+
+1.  Extract the name and PAN number from the provided image.
+2.  Compare the extracted PAN number with the user-provided PAN number.
+3.  Check if the image appears to be a legitimate PAN card.
+
+User-provided PAN: {{panNumber}}
+PAN Card Image: {{media url=panCardDataUri}}
+
+Based on your analysis, determine if the verification is successful. Provide the extracted details and a reason for your decision. If it fails, explain why (e.g., mismatch, blurry image).
+`,
+});
+
+
+const verifyPanCardFlow = ai.defineFlow(
+    {
+        name: 'verifyPanCardFlow',
+        inputSchema: VerifyPanCardInputSchema,
+        outputSchema: VerifyPanCardOutputSchema,
+    },
+    async (input) => {
+        const { output } = await prompt(input);
+        return output!;
+    }
+);

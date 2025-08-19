@@ -9,7 +9,8 @@
  * - SuggestIceBreakerOutput - The return type for the suggestIceBreaker function.
  */
 
-import { z } from 'zod';
+import { ai } from '@/ai/genkit';
+import { z } from 'genkit';
 
 const SuggestIceBreakerInputSchema = z.object({
   userProfile: z
@@ -33,14 +34,36 @@ const SuggestIceBreakerOutputSchema = z.object({
 export type SuggestIceBreakerOutput = z.infer<typeof SuggestIceBreakerOutputSchema>;
 
 export async function suggestIceBreaker(input: SuggestIceBreakerInput): Promise<SuggestIceBreakerOutput> {
-  // Mock implementation
-  return new Promise(resolve => {
-    setTimeout(() => {
-        resolve({
-            iceBreakerSuggestion: `I see we both love hiking! What's the most adventurous trail you've ever been on?`,
-            reasoning: 'Both profiles mention a love for hiking and adventure. This question is open-ended and directly relates to a shared interest, making it a great conversation starter.',
-            isAligned: true,
-        });
-    }, 1000);
-  });
+    return suggestIceBreakerFlow(input);
 }
+
+
+const prompt = ai.definePrompt({
+    name: 'suggestIceBreakerPrompt',
+    input: { schema: SuggestIceBreakerInputSchema },
+    output: { schema: SuggestIceBreakerOutputSchema },
+    prompt: `You are an AI dating assistant. Your goal is to help a user start a meaningful conversation with a new match.
+
+Analyze the two profiles provided: the user's profile and their match's profile. Based on shared interests, unique hobbies, or anything interesting you can find, suggest a personalized, engaging ice-breaker question.
+
+Provide a short reason explaining why the suggestion is good. Also, indicate if the profiles seem well-aligned.
+
+User Profile:
+{{{userProfile}}}
+
+Match's Profile:
+{{{matchProfile}}}
+`,
+});
+
+const suggestIceBreakerFlow = ai.defineFlow(
+    {
+        name: 'suggestIceBreakerFlow',
+        inputSchema: SuggestIceBreakerInputSchema,
+        outputSchema: SuggestIceBreakerOutputSchema,
+    },
+    async (input) => {
+        const { output } = await prompt(input);
+        return output!;
+    }
+);

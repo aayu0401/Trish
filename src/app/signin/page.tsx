@@ -15,6 +15,9 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { auth } from "@/lib/firebase";
+
 
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email address."),
@@ -64,16 +67,27 @@ export default function SigninPage() {
     setIsLoading(true);
     setFirebaseError(null);
     try {
-      // MOCK: Simulate successful login
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await signInWithEmailAndPassword(auth, values.email, values.password);
       toast({
         title: "Signed In Successfully!",
         description: "Welcome back!",
       });
       router.push("/browse");
     } catch (error: any) {
-       // You can add mock error handling here if needed
-       setFirebaseError('An unexpected error occurred. Please try again.');
+       let errorMessage = "An unexpected error occurred. Please try again.";
+       switch (error.code) {
+          case 'auth/user-not-found':
+          case 'auth/invalid-credential':
+             errorMessage = 'Invalid email or password. Please check your credentials.';
+             break;
+          case 'auth/invalid-email':
+             errorMessage = 'Please enter a valid email address.';
+             break;
+          case 'auth/too-many-requests':
+              errorMessage = 'Too many failed login attempts. Please try again later.';
+              break;
+       }
+       setFirebaseError(errorMessage);
     } finally {
         setIsLoading(false);
     }
@@ -83,15 +97,15 @@ export default function SigninPage() {
     setIsGoogleLoading(true);
     setFirebaseError(null);
     try {
-        // MOCK: Simulate successful Google sign-in
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        const provider = new GoogleAuthProvider();
+        await signInWithPopup(auth, provider);
         toast({
             title: "Signed In Successfully!",
             description: "Welcome back!",
         });
         router.push("/browse");
     } catch (error: any) {
-        setFirebaseError("Google sign-in is currently unavailable.");
+        setFirebaseError("Google sign-in failed. Please try again.");
     } finally {
       setIsGoogleLoading(false);
     }

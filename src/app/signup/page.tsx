@@ -17,8 +17,10 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Separator } from "@/components/ui/separator";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth, db } from "@/lib/firebase";
+import { doc, setDoc } from "firebase/firestore";
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -83,15 +85,40 @@ export default function SignupPage() {
         setIsLoading(true);
         setFirebaseError(null);
         try {
-            // MOCK: Simulate account creation
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
+            const user = userCredential.user;
+
+            // Create a document in Firestore
+            await setDoc(doc(db, "users", user.uid), {
+                uid: user.uid,
+                name: values.name,
+                email: values.email,
+                gender: values.gender,
+                interestedIn: values.interestedIn,
+                bio: values.bio,
+                interests: values.interests,
+                createdAt: new Date(),
+            });
+
             toast({
               title: "Account Created!",
               description: "Your profile has been successfully created.",
             });
             router.push("/browse");
         } catch (error: any) {
-            setFirebaseError('An unexpected error occurred. Please try again.');
+            let errorMessage = "An unexpected error occurred. Please try again.";
+            switch (error.code) {
+                case 'auth/email-already-in-use':
+                    errorMessage = 'This email address is already in use.';
+                    break;
+                case 'auth/invalid-email':
+                    errorMessage = 'Please enter a valid email address.';
+                    break;
+                case 'auth/weak-password':
+                    errorMessage = 'The password is too weak. Please choose a stronger password.';
+                    break;
+            }
+            setFirebaseError(errorMessage);
         } finally {
             setIsLoading(false);
         }
@@ -101,15 +128,16 @@ export default function SignupPage() {
         setIsGoogleLoading(true);
         setFirebaseError(null);
         try {
-            // MOCK: Simulate successful Google sign-in
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            const provider = new GoogleAuthProvider();
+            await signInWithPopup(auth, provider);
+            // You might want to check if the user is new and create a Firestore doc here as well
             toast({
                 title: "Welcome!",
                 description: "Your account is created. Don't forget to complete your profile!",
             });
             router.push("/browse");
         } catch (error: any) {
-            setFirebaseError("Google sign-in is currently unavailable.");
+            setFirebaseError("Google sign-in failed. Please try again.");
         } finally {
             setIsGoogleLoading(false);
         }
