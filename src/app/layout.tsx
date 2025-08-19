@@ -1,3 +1,4 @@
+
 import type { Metadata } from "next";
 import { PT_Sans } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
@@ -6,6 +7,7 @@ import "./globals.css";
 const ptSans = PT_Sans({
   subsets: ["latin"],
   weight: ["400", "700"],
+  variable: '--font-pt-sans',
 });
 
 export const metadata: Metadata = {
@@ -20,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${ptSans.className} antialiased`}>
+      <body className={`${ptSans.variable} font-sans antialiased`} suppressHydrationWarning>
         {children}
         <Toaster />
       </body>
