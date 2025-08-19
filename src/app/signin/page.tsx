@@ -16,7 +16,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { initializeFirebase } from "@/lib/firebase";
 
 
 const formSchema = z.object({
@@ -67,6 +67,7 @@ export default function SigninPage() {
     setIsLoading(true);
     setFirebaseError(null);
     try {
+      const { auth } = await initializeFirebase();
       await signInWithEmailAndPassword(auth, values.email, values.password);
       toast({
         title: "Signed In Successfully!",
@@ -97,6 +98,7 @@ export default function SigninPage() {
     setIsGoogleLoading(true);
     setFirebaseError(null);
     try {
+        const { auth } = await initializeFirebase();
         const provider = new GoogleAuthProvider();
         await signInWithPopup(auth, provider);
         toast({

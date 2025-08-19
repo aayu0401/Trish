@@ -19,7 +19,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth, db } from "@/lib/firebase";
+import { initializeFirebase } from "@/lib/firebase";
 import { doc, setDoc } from "firebase/firestore";
 
 const formSchema = z.object({
@@ -85,6 +85,7 @@ export default function SignupPage() {
         setIsLoading(true);
         setFirebaseError(null);
         try {
+            const { auth, db } = await initializeFirebase();
             const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
             const user = userCredential.user;
 
@@ -128,6 +129,7 @@ export default function SignupPage() {
         setIsGoogleLoading(true);
         setFirebaseError(null);
         try {
+            const { auth } = await initializeFirebase();
             const provider = new GoogleAuthProvider();
             await signInWithPopup(auth, provider);
             // You might want to check if the user is new and create a Firestore doc here as well
